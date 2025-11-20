@@ -1,0 +1,1602 @@
+[
+  {
+    "query":"In season is 2008 09, how many wins did they have?",
+    "schema":"CREATE TABLE df (\"Season\" text, \"GP\" real, \"W (OT\/SO)\" text, \"L (OT\/SO)\" text, \"Pts\" real, \"Pts\/GP\" text, \"GF – GA\" text, \"Rank (league\/conference)\" text, \"Top Scorer\" text)",
+    "sql":"SELECT \"W (OT\/SO)\" FROM df WHERE \"Season\" = '2008–09'",
+    "source":"wikisql",
+    "prediction":"SELECT \"W (OT\/SO)\" FROM df WHERE \"Season\" = '2008 09'",
+    "judgement":"<reason>\n  The two SQL statements differ because the WHERE clauses specify different values for the \"Season\" column. Statement 1 looks for rows where \"Season\" is '2008–09' (with an en dash), while Statement 2 looks for rows where \"Season\" is '2008 09' (with a space).  If there are no rows where \"Season\" equals '2008 09' then the second query will return an empty set. If there are rows where \"Season\" equals '2008-09', then the first query will return those rows.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"find me all the rows where category != prediction",
+    "schema":"CREATE TABLE df (text VARCHAR, category VARCHAR, prediction VARCHAR);",
+    "sql":"\nSELECT * FROM df WHERE category != prediction;\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE category != prediction;",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both select all columns from the table 'df' where the 'category' column is not equal to the 'prediction' column.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What are the investors of entrepreneurs and the corresponding number of entrepreneurs invested by each investor. Visualize by pie chart.",
+    "schema":"CREATE TABLE df (Entrepreneur_ID int, People_ID int, Company text, Money_Requested real, Investor text)",
+    "sql":"SELECT Investor, COUNT(*) FROM df GROUP BY Investor",
+    "source":"nvbench",
+    "prediction":"SELECT Investor, COUNT(DISTINCT Entrepreneur_ID) AS Number_of_Entrepreneurs FROM df GROUP BY Investor",
+    "judgement":"<reason>\n  Statement 1 counts all rows for each investor, regardless of whether the Entrepreneur_ID is distinct. Statement 2 counts the distinct number of entrepreneurs for each investor. Therefore, they are not equivalent, as one counts rows and the other counts distinct entrepreneur IDs.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What nurses are on call with block floor 1 and block code 1? Tell me their names.",
+    "schema":"CREATE TABLE df (nurse VARCHAR, blockfloor VARCHAR, blockcode VARCHAR)",
+    "sql":"SELECT nurse FROM df WHERE blockfloor = 1 AND blockcode = 1",
+    "source":"sql_create_context",
+    "prediction":"SELECT nurse FROM df WHERE blockfloor = '1' AND blockcode = '1';",
+    "judgement":"<reason>\n  The statements are equivalent because although blockfloor and blockcode are defined as VARCHAR, SQL will implicitly convert the integer values 1 to the string '1' for comparison.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"For each state, when was the last time the average score data was collected?",
+    "schema":"CREATE TABLE ndecoreexcel_math_grade8 (year number, state text, all_students text, average_scale_score number)",
+    "sql":"SELECT state, MAX(year) FROM df GROUP BY state",
+    "source":"studentmathscore",
+    "prediction":"SELECT state, MAX(year) AS last_year FROM ndecoreexcel_math_grade8 GROUP BY state",
+    "judgement":"<reason>\n  The statements are functionally equivalent. Statement 1 selects the state and the maximum year for each state from a table aliased as `df`. Statement 2 selects the state and the maximum year for each state from the table `ndecoreexcel_math_grade8` and aliases the maximum year column as `last_year`. Since `df` is not defined, and `ndecoreexcel_math_grade8` is defined as the table to query, and since the table is aliased as `df` in the first statement, the statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the try bonus when there were 58 points?",
+    "schema":"CREATE TABLE df (\"Club\" text, \"Played\" text, \"Drawn\" text, \"Lost\" text, \"Points for\" text, \"Points against\" text, \"Tries for\" text, \"Tries against\" text, \"Try bonus\" text, \"Losing bonus\" text, \"Points\" text)",
+    "sql":"SELECT \"Try bonus\" FROM df WHERE \"Points\" = '58'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Try bonus\" FROM df WHERE \"Points\" = '58'",
+    "judgement":"<reason>\n  Both SQL statements select the \"Try bonus\" column from the table \"df\" where the \"Points\" column is equal to '58'.  Therefore, they are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Name the memory for meodel number for atom e640t",
+    "schema":"CREATE TABLE df (\"Model number\" text, \"sSpec number\" text, \"Frequency\" text, \"GPU frequency\" text, \"L2 cache\" text, \"I\/O bus\" text, \"Memory\" text, \"Voltage\" text, \"TDP\" text, \"Socket\" text, \"Release date\" text, \"Part number(s)\" text, \"Release price ( USD )\" text)",
+    "sql":"SELECT \"Memory\" FROM df WHERE \"Model number\" = 'Atom E640T'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Memory\" FROM df WHERE \"Model number\" = 'atom e640t'",
+    "judgement":"<reason>\n  The statements are not equivalent because the WHERE clause in SQL is case-sensitive by default when comparing string values. Therefore, 'Atom E640T' and 'atom e640t' are treated as different values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"In the county where Bush won 77.76%, how many total votes were cast?",
+    "schema":"CREATE TABLE df (total__number VARCHAR, bush__percentage VARCHAR)",
+    "sql":"SELECT total__number FROM df WHERE bush__percentage = \"77.76%\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT total__number FROM df WHERE bush__percentage = '77.76%'",
+    "judgement":"<reason>\n  The two statements are equivalent because both use a WHERE clause to filter results based on the condition that the bush__percentage column equals '77.76%'. The only difference is the use of double quotes in statement 1 and single quotes in statement 2 to enclose the string literal '77.76%'. In most SQL implementations, single quotes and double quotes are often interchangeable for string literals, making the conditions equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"who was the only opponent to be scored against with an assist from wambach ?",
+    "schema":"CREATE TABLE df (id number, \"goal\" number, \"date\" text, \"location\" text, \"opponent\" text, \"lineup\" text, \"min\" number, \"assist\/pass\" text, \"score\" text, \"result\" text, \"competition\" text)",
+    "sql":"SELECT \"opponent\" FROM df WHERE \"assist\/pass\" = 'wambach'",
+    "source":"squall",
+    "prediction":"SELECT DISTINCT opponent FROM df WHERE \"assist\/pass\" LIKE '%wambach%' AND goal > 0;",
+    "judgement":"<reason>\nStatement 1 selects the \"opponent\" where the \"assist\/pass\" column is exactly 'wambach'. Statement 2 selects distinct \"opponent\" values where the \"assist\/pass\" column contains 'wambach' and the \"goal\" column is greater than 0. The LIKE operator and the DISTINCT keyword change the output, and the added condition `goal > 0` further constrains the result set. Therefore, the two statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Who played Mixed Doubles in 1991?",
+    "schema":"CREATE TABLE df (\"Year\" real, \"Mens singles\" text, \"Womens singles\" text, \"Mens doubles\" text, \"Womens doubles\" text, \"Mixed doubles\" text)",
+    "sql":"SELECT \"Mixed doubles\" FROM df WHERE \"Year\" = '1991'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Mixed doubles\" FROM df WHERE \"Year\" = 1991",
+    "judgement":"<reason>\n  Statement 1 uses the string literal '1991' to compare against the \"Year\" column, while Statement 2 uses the numeric literal 1991. Since the \"Year\" column is defined as REAL, both comparisons are valid and will produce the same result because the database will implicitly convert the string '1991' to the number 1991 for the comparison.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the lowest Loss with Gain larger than 319 for derrick locke?",
+    "schema":"CREATE TABLE df (loss INTEGER, name VARCHAR, gain VARCHAR)",
+    "sql":"SELECT MIN(loss) FROM df WHERE name = \"derrick locke\" AND gain > 319",
+    "source":"sql_create_context",
+    "prediction":"SELECT MIN(loss) FROM df WHERE gain > '319' AND name = 'derrick locke';",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because the order of the WHERE clause conditions does not affect the result, and string literals are implicitly converted to integers in the comparison `gain > '319'` since gain is of type VARCHAR, and loss is of type INTEGER.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the total average for the England team when the wickets are less than 18, the best bowling is 4\/138, and there are less than 3 matches?",
+    "schema":"CREATE TABLE df (\"Player\" text, \"Team\" text, \"Matches\" real, \"Wickets\" real, \"Average\" real, \"Best Bowling\" text)",
+    "sql":"SELECT COUNT(\"Average\") FROM df WHERE \"Team\" = 'england' AND \"Wickets\" < '18' AND \"Best Bowling\" = '4\/138' AND \"Matches\" < '3'",
+    "source":"wikisql",
+    "prediction":"SELECT SUM(\"Average\") FROM df WHERE \"Team\" = 'England' AND \"Wickets\" < 18 AND \"Best Bowling\" = '4\/138' AND \"Matches\" < 3",
+    "judgement":"<reason>\n  The first statement counts the number of non-null values in the \"Average\" column that satisfy the conditions in the WHERE clause. The second statement calculates the sum of \"Average\" values that satisfy the conditions in the WHERE clause. Also, the first statement uses 'england' while the second uses 'England'. Although some SQL implementations are case-insensitive by default, it is safest to assume that case matters. Thus, the two statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"which division were they in the most ?",
+    "schema":"CREATE TABLE df (id number, \"season\" text, \"tier\" number, \"division\" text, \"place\" text)",
+    "sql":"SELECT \"division\" FROM df GROUP BY \"division\" ORDER BY COUNT(*) DESC LIMIT 1",
+    "source":"squall",
+    "prediction":"SELECT \"division\" FROM df GROUP BY \"division\" ORDER BY COUNT(*) DESC LIMIT 1;",
+    "judgement":"<reason>\n  The two statements are identical. The semicolon at the end of the second statement is optional in many SQL implementations and doesn't change the meaning. Both queries select the \"division\" column from the \"df\" table, group the results by \"division\", order the groups in descending order based on the count of rows in each group, and then limit the result to the top 1 \"division\".\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the latitude of the point with a longitude of 147.1w?",
+    "schema":"CREATE TABLE df (\"Name\" text, \"Latitude\" text, \"Longitude\" text, \"Diameter\" real, \"Year named\" real)",
+    "sql":"SELECT \"Latitude\" FROM df WHERE \"Longitude\" = '147.1w'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Latitude\" FROM df WHERE \"Longitude\" = '147.1w'",
+    "judgement":"<reason>\n  Both SQL statements select the \"Latitude\" column from the table \"df\" where the \"Longitude\" column is equal to the string '147.1w'.  They are identical.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the margin of victory for PGA Championship?",
+    "schema":"CREATE TABLE df (margin_of_victory VARCHAR, tournament VARCHAR)",
+    "sql":"SELECT margin_of_victory FROM df WHERE tournament = \"pga championship\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT margin_of_victory FROM df WHERE tournament = 'PGA Championship'",
+    "judgement":"<reason>\n  The two statements are not equivalent because the string literal in the WHERE clause of the first query is \"pga championship\" while the string literal in the WHERE clause of the second query is \"PGA Championship\". Depending on the database collation and how the 'tournament' column is defined, these may be treated case-sensitively, resulting in different (or no) rows being returned. If the collation is case-insensitive, they will be equivalent. However, without knowing the collation, we must assume they are different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which located featured the first prize of 33500?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Tournament\" text, \"Location\" text, \"Purse( $ )\" real, \"Winner\" text, \"Score\" text, \"1st Prize( $ )\" real)",
+    "sql":"SELECT \"Location\" FROM df WHERE \"1st Prize( $ )\" = '33500'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Location\" FROM df WHERE \"1st Prize( $ )\" = 33500 LIMIT 1",
+    "judgement":"<reason>\n  The first query selects all locations where the \"1st Prize( $ )\" is equal to 33500. The second query selects the same locations but limits the result set to a single row. If there is only one row in the table that matches the condition then the queries would be equivalent, otherwise they would not be. Since the question does not state the number of rows, we must assume they are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What are the different statement ids on accounts, and the number of accounts for each?",
+    "schema":"CREATE TABLE df ( account_id number, statement_id number, account_details text )",
+    "sql":"SELECT statement_id, COUNT(*) FROM df GROUP BY statement_id",
+    "source":"spider",
+    "prediction":"SELECT statement_id, COUNT(DISTINCT account_id) AS number_of_accounts FROM df GROUP BY statement_id;",
+    "judgement":"<reason>\nStatement 1 counts all rows for each `statement_id`. Statement 2 counts the number of *distinct* `account_id` values for each `statement_id`. If there are duplicate `account_id` values for a given `statement_id`, the counts will be different. Therefore, the statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"who won the south after esc geretsried did during the 2006-07 season ?",
+    "schema":"CREATE TABLE df (id number, \"season\" text, \"north\" text, \"south\" text, \"east\" text, \"west\" text)",
+    "sql":"SELECT \"south\" FROM df WHERE id = (SELECT id FROM df WHERE \"south\" = 'esc geretsried') + 1",
+    "source":"squall",
+    "prediction":"SELECT south FROM df WHERE season = '2006-07' AND north = 'esc geretsried';",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent because they have different WHERE clauses and select different columns. Statement 1 selects the \"south\" column based on an id that is one greater than the id of a row where \"south\" is 'esc geretsried'. Statement 2 selects the \"south\" column based on \"season\" being '2006-07' and \"north\" being 'esc geretsried'. These are entirely different conditions and will likely return different results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the total number of Losses, when Last Appearance is 2003, and when Wins is greater than 2?",
+    "schema":"CREATE TABLE df (losses VARCHAR, last_appearance VARCHAR, wins VARCHAR)",
+    "sql":"SELECT COUNT(losses) FROM df WHERE last_appearance = \"2003\" AND wins > 2",
+    "source":"sql_create_context",
+    "prediction":"SELECT SUM(CAST(losses AS INTEGER)) FROM df WHERE last_appearance = '2003' AND CAST(wins AS INTEGER) > 2",
+    "judgement":"<reason>\n  Statement 1 counts the number of rows where `last_appearance` is \"2003\" and `wins` is greater than 2. It counts non-null values in the `losses` column. Statement 2 attempts to sum the integer values of the `losses` column, but only for rows where `last_appearance` is \"2003\" and the integer value of the `wins` column is greater than 2. The CAST operations may also introduce errors if the VARCHAR columns cannot be cast to the correct datatypes. Therefore, the statements are not equivalent. One counts rows, the other sums values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Tell me the circuit for 10 may for targa florio",
+    "schema":"CREATE TABLE df (circuit VARCHAR, date VARCHAR, name VARCHAR)",
+    "sql":"SELECT circuit FROM df WHERE date = \"10 may\" AND name = \"targa florio\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT circuit FROM df WHERE date = '10 may' AND name = 'targa florio'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because single quotes and double quotes are generally interchangeable for string literals in SQL.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Questions and Accepted Answer: Search the set.",
+    "schema":"CREATE TABLE PostNotices (Id number, PostId number, PostNoticeTypeId number, CreationDate time, DeletionDate time, ExpiryDate time, Body text, OwnerUserId number, DeletionUserId number)",
+    "sql":"SELECT p1.Id AS \"post_link\", p1.*, p2.Id AS \"post_link\", p2.Id AS \"post_link\", p2.Score AS \"p2Score\", p2.Body AS \"p2Body\", p2.OwnerUserId AS \"p2UserId\", p2.OwnerDisplayName AS \"p2OwnerDisplayName\", p2.CommentCount AS \"p2CommentCount\" FROM df AS p1, df AS p2 WHERE p1.ParentId IS NULL AND NOT p1.AcceptedAnswerId IS NULL AND p1.AcceptedAnswerId = p2.Id AND (p1.Tags LIKE '%compiler-errors%' OR p1.Tags LIKE '%compiler-warnings%') AND p1.Body LIKE '%reason:%' ORDER BY p1.Score DESC",
+    "source":"sede",
+    "prediction":"SELECT * FROM df WHERE PostNoticeTypeId = 4",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent because they query the table 'df' (which is not 'PostNotices') with different conditions and select different columns. Statement 1 joins 'df' with itself, filters based on ParentId, AcceptedAnswerId, Tags, and Body, and orders the results. Statement 2 filters based on PostNoticeTypeId. The selected columns also differ significantly.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What was the date of the game when Atlanta was the home team?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Visitor\" text, \"Score\" text, \"Home\" text, \"Decision\" text, \"Attendance\" real, \"Record\" text)",
+    "sql":"SELECT \"Date\" FROM df WHERE \"Home\" = 'atlanta'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Date\" FROM df WHERE \"Home\" = 'Atlanta'",
+    "judgement":"<reason>\n  The statements are not equivalent because SQL string comparisons are typically case-sensitive. Therefore, 'atlanta' and 'Atlanta' are treated as different values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is the average age of patients who have stayed in the hospital for 4 days with a government insurance policy?",
+    "schema":"CREATE TABLE demographic (subject_id text, hadm_id text, name text, marital_status text, age text, dob text, gender text, language text, religion text, admission_type text, days_stay text, insurance text, ethnicity text, expire_flag text, admission_location text, discharge_location text, diagnosis text, dod text, dob_year text, dod_year text, admittime text, dischtime text, admityear text)",
+    "sql":"SELECT AVG(df.age) FROM df WHERE df.insurance = \"Government\" AND df.days_stay = \"4\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT AVG(CAST(age AS INTEGER)) FROM demographic WHERE days_stay = '4' AND insurance = 'Government'",
+    "judgement":"<reason>\n  Statement 1 uses the alias \"df\" for the table, but it's unclear where this alias is defined. Assuming \"df\" refers to the \"demographic\" table, the statements are similar, but Statement 1 does not explicitly CAST the age column to an integer, while statement 2 does. Since the age column is defined as text, not casting it to an integer may lead to incorrect averaging. Additionally, it is more appropriate to cast the age column to an integer.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the Date with a Leading scorer with maurice williams (25), and a Score with 102 105?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Visitor\" text, \"Score\" text, \"Home\" text, \"Leading scorer\" text, \"Record\" text)",
+    "sql":"SELECT \"Date\" FROM df WHERE \"Leading scorer\" = 'maurice williams (25)' AND \"Score\" = '102–105'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Date\" FROM df WHERE \"Leading scorer\" = 'maurice williams (25)' AND \"Score\" = '102 105'",
+    "judgement":"<reason>\n  The two statements differ in the WHERE clause condition for the \"Score\" column. Statement 1 looks for a value of '102–105' (with an en dash), while Statement 2 looks for '102 105' (with a space). These are different string values, so the statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What Call sign has a City of license of higgston, ga?",
+    "schema":"CREATE TABLE df (call_sign VARCHAR, city_of_license VARCHAR)",
+    "sql":"SELECT call_sign FROM df WHERE city_of_license = \"higgston, ga\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT call_sign FROM df WHERE city_of_license = 'higgston, ga';",
+    "judgement":"<reason>\n  In SQL, both single quotes (') and double quotes (\") can be used to represent string literals. Therefore, the two statements are equivalent because they both select the 'call_sign' from the 'df' table where the 'city_of_license' is equal to 'higgston, ga'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"How many people attended the game on week 3?",
+    "schema":"CREATE TABLE df (attendance INTEGER, week VARCHAR)",
+    "sql":"SELECT AVG(attendance) FROM df WHERE week = 3",
+    "source":"sql_create_context",
+    "prediction":"SELECT attendance FROM df WHERE week = '3'",
+    "judgement":"<reason>\n  Statement 1 calculates the average attendance for the week '3' (implicitly converting '3' to a number). Statement 2 selects the attendance values for the week that is literally the string '3'. The AVG() function is also missing in statement 2.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is score of the game played in place t8 with Byron Nelson playing?",
+    "schema":"CREATE TABLE df (score VARCHAR, place VARCHAR, player VARCHAR)",
+    "sql":"SELECT score FROM df WHERE place = \"t8\" AND player = \"byron nelson\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT score FROM df WHERE place = 't8' AND player = 'Byron Nelson'",
+    "judgement":"<reason>\n  The statements are equivalent because string comparisons in SQL are typically case-insensitive, unless the database is configured to be case-sensitive or the column is defined with a case-sensitive collation. Additionally, double quotes and single quotes are often interchangeable for string literals in SQL.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what is the flash size difference in the at90s8515 chip and the at90s4414 ?",
+    "schema":"CREATE TABLE df (id number, \"chip\" text, \"flash size\" text, \"eeprom\" number, \"sram\" number, \"frequency\\n[mhz]\" number, \"package\" text)",
+    "sql":"SELECT ABS((SELECT \"flash size\" FROM df WHERE \"chip\" = 'at90s8515') - (SELECT \"flash size\" FROM df WHERE \"chip\" = 'at90s4414'))",
+    "source":"squall",
+    "prediction":"SELECT ABS(CAST(SUBSTR((SELECT \"flash size\" FROM df WHERE \"chip\" = 'at90s8515'), 1, LENGTH((SELECT \"flash size\" FROM df WHERE \"chip\" = 'at90s8515')) - 1) AS INTEGER) - CAST(SUBSTR((SELECT \"flash size\" FROM df WHERE \"chip\" = 'at90s4414'), 1, LENGTH((SELECT \"flash size\" FROM df WHERE \"chip\" = 'at90s4414')) - 1) AS INTEGER)) AS \"flash size difference\"",
+    "judgement":"<reason>\nStatement 1 calculates the absolute difference between the \"flash size\" values for the 'at90s8515' and 'at90s4414' chips directly. It assumes \"flash size\" can be implicitly converted for subtraction. Statement 2 attempts to extract a substring from the \"flash size\" values, removing the last character, and then converts the remaining substring to an integer before calculating the absolute difference. This implies that the flash size values have a trailing character that needs to be removed before the calculation can be performed. If the \"flash size\" contains a trailing character, such as 'k', then the first statement will likely produce an error, or an unexpected result due to implicit conversion. If the last character is not present or is not relevant to the subtraction, then the two statements are functionally the same. However, based on the description, the second statement is trying to remove a trailing character, which the first statement is not.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What religion has a para of 56.5%?",
+    "schema":"CREATE TABLE df (\"Religion\" text, \"Suriname\" text, \"Paramaribo\" text, \"Wanica\" text, \"Nickerie\" text, \"Coronie\" text, \"Saramacca\" text, \"Commewijne\" text, \"Marowijne\" text, \"Para\" text, \"Brokopondo\" text, \"Sipaliwini\" text)",
+    "sql":"SELECT \"Religion\" FROM df WHERE \"Para\" = '56.5%'",
+    "source":"wikisql",
+    "prediction":"SELECT Religion FROM df WHERE \"Para\" = '56.5%'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent. Statement 2 does not quote the column name \"Religion\", but SQL is case-insensitive and will interpret \"Religion\" as the column \"Religion\".\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"count the number of people who had been admitted until 1 year ago to hospital.",
+    "schema":"CREATE TABLE df ( row_id number, subject_id number, hadm_id number, admittime time, dischtime time, admission_type text, admission_location text, discharge_location text, insurance text, language text, marital_status text, ethnicity text, age number )",
+    "sql":"SELECT COUNT(DISTINCT df.subject_id) FROM df WHERE DATETIME(df.admittime) <= DATETIME(CURRENT_TIME(), '-1 year')",
+    "source":"mimic_iii",
+    "prediction":"SELECT COUNT(DISTINCT subject_id) FROM df WHERE admittime <= CURRENT_DATE - INTERVAL '1 year'",
+    "judgement":"<reason>\nThe two statements are likely equivalent, but there are subtle differences to consider which may impact their precise behavior depending on the specific SQL implementation.\n\n1.  **`DATETIME(df.admittime)` vs. `admittime`:** Statement 1 explicitly converts `df.admittime` to a datetime object using `DATETIME()`. Statement 2 directly uses `admittime`. The equivalence depends on the data type of `admittime`. If `admittime` is already a datetime type, then both statements will function the same. If `admittime` is a string, the implicit conversion in statement 2 may be different than the explicit conversion in statement 1 in certain SQL dialects.\n\n2.  **`DATETIME(CURRENT_TIME(), '-1 year')` vs. `CURRENT_DATE - INTERVAL '1 year'`:** Statement 1 uses `CURRENT_TIME()` and subtracts a year using string formatting within the `DATETIME()` function. Statement 2 utilizes `CURRENT_DATE` and subtracts an interval of '1 year'. The key difference is `CURRENT_TIME()` vs `CURRENT_DATE`. `CURRENT_TIME()` returns the current time and date, while `CURRENT_DATE` returns only the current date with the time component set to midnight. If the records have a time component that is not midnight, the results would be different.\n\nGiven these considerations, the statements are not perfectly equivalent due to the time component.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Display a bar chart for the names and the ages of editors, list by the bar from low to high.",
+    "schema":"CREATE TABLE df (Editor_ID int, Name text, Age real)",
+    "sql":"SELECT Name, Age FROM df ORDER BY Name",
+    "source":"nvbench",
+    "prediction":"SELECT Name, Age FROM df ORDER BY Age ASC;",
+    "judgement":"<reason>\n  The first statement orders the results by Name alphabetically. The second statement orders the results by Age in ascending order. These are different orderings and will generally produce different result sets.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"StackOverflow Rank and Percentile by Tag.",
+    "schema":"CREATE TABLE df (Id number, PostTypeId number, AcceptedAnswerId number, ParentId number, CreationDate time, DeletionDate time, Score number, ViewCount number, Body text, OwnerUserId number, OwnerDisplayName text, LastEditorUserId number, LastEditorDisplayName text, LastEditDate time, LastActivityDate time, Title text, Tags text, AnswerCount number, CommentCount number, FavoriteCount number, ClosedDate time, CommunityOwnedDate time, ContentLicense text)",
+    "sql":"WITH Rankings AS (SELECT Id, Ranking = ROW_NUMBER() OVER (ORDER BY Reputation DESC) FROM Users WHERE UPPER(Users.Location) LIKE UPPER('##Country##')), Counts AS (SELECT Count = COUNT(*) FROM Users WHERE Reputation > '##ReputationCutoff##') SELECT Id, Ranking, 100 - (100 * (CAST(Ranking AS FLOAT(20, 5)) \/ (SELECT Count FROM Counts))) AS Percentile FROM Rankings WHERE Id = '##UserId##'",
+    "source":"sede",
+    "prediction":"SELECT Tags, RANK() OVER (ORDER BY Score DESC) AS Rank, PERCENT_RANK() OVER (ORDER BY Score DESC) AS Percentile FROM df WHERE Tags IS NOT NULL AND Tags <> ''",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent. Statement 1 calculates a percentile based on user reputation, location, and a cutoff value, using a common table expression (CTE) to rank users and count those exceeding the reputation threshold. Statement 2 calculates the rank and percentile of 'Tags' based on 'Score' in the 'df' table, filtering out null or empty tags. They operate on different tables ('Users' vs. 'df'), different columns (reputation vs. score, location\/UserID vs. Tags), and calculate different types of percentiles. Statement 1 specifically targets a single user ID, while Statement 2 considers all rows meeting the tag criteria.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what was the last hospital discharge time of patient 029-27704?",
+    "schema":"CREATE TABLE df ( uniquepid text, patienthealthsystemstayid number, patientunitstayid number, gender text, age text, ethnicity text, hospitalid number, wardid number, admissionheight number, admissionweight number, dischargeweight number, hospitaladmittime time, hospitaladmitsource text, unitadmittime time, unitdischargetime time, hospitaldischargetime time, hospitaldischargestatus text )",
+    "sql":"SELECT df.hospitaldischargetime FROM df WHERE df.uniquepid = '029-27704' ORDER BY df.hospitaldischargetime DESC LIMIT 1",
+    "source":"eicu",
+    "prediction":"SELECT MAX(hospitaldischargetime) FROM df WHERE uniquepid = '029-27704'",
+    "judgement":"<reason>\nStatement 1 returns the most recent hospital discharge time for a specific patient, ordered from most recent to least recent, but only returning the first row. Statement 2 returns the most recent hospital discharge time for the same patient. Both statements are equivalent because statement 1 returns the single latest hospital discharge time, and statement 2 returns the maximum, or latest, hospital discharge time.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what's the total number of position with driver robby gordon",
+    "schema":"CREATE TABLE df (position VARCHAR, driver VARCHAR)",
+    "sql":"SELECT COUNT(position) FROM df WHERE driver = \"Robby Gordon\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT COUNT(position) FROM df WHERE driver = 'robby gordon'",
+    "judgement":"<reason>\nThe SQL statements are not equivalent because the string comparison is case-sensitive. \"Robby Gordon\" is not the same as \"robby gordon\". The count will differ if any drivers are listed as \"Robby Gordon\" versus \"robby gordon\".\n<\/reason>\n<answer>\nfalse\n<\/answer>"
+  },
+  {
+    "query":"What is the Place of the Player with a Score of 67?",
+    "schema":"CREATE TABLE df (\"Place\" text, \"Player\" text, \"Country\" text, \"Score\" real, \"To par\" text)",
+    "sql":"SELECT \"Place\" FROM df WHERE \"Score\" = '67'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Place\" FROM df WHERE \"Score\" = 67",
+    "judgement":"<reason>\n  Statement 1 uses the string literal '67' for comparison with the \"Score\" column, while statement 2 uses the numeric literal 67.  Since the \"Score\" column is defined as real, both statements will implicitly cast the string '67' to a number before comparison. Therefore they are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who is the Colourist that has a Story Title of Broken Glass (part 3) and a Letterer of Albers?",
+    "schema":"CREATE TABLE df (\"Cover Date\" text, \"Story Title\" text, \"Writer\/s\" text, \"Letterer\/s\" text, \"Colourist\/s\" text)",
+    "sql":"SELECT \"Colourist\/s\" FROM df WHERE \"Letterer\/s\" = 'albers' AND \"Story Title\" = 'broken glass (part 3)'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Colourist\/s\" FROM df WHERE \"Story Title\" = 'Broken Glass (part 3)' AND \"Letterer\/s\" = 'Albers'",
+    "judgement":"<reason>\n  The statements are not equivalent because the string comparisons are case-sensitive. Statement 1 looks for 'albers' and 'broken glass (part 3)' while Statement 2 looks for 'Albers' and 'Broken Glass (part 3)'. These will return different results, or potentially no results, if the case does not match the data in the table.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"average of new and total results by month by state for fema region 4",
+    "schema":"CREATE TABLE df (state VARCHAR, state_name VARCHAR, state_fips INTEGER, fema_region VARCHAR, overall_outcome VARCHAR, date VARCHAR, new_results_reported INTEGER, total_results_reported INTEGER, geocoded_state VARCHAR);",
+    "sql":"SELECT state, AVG(new_results_reported) AS avg_new_results, AVG(total_results_reported) AS avg_total_results, strftime('%Y-%m', date) AS month FROM df WHERE fema_region = '4' GROUP BY state, month",
+    "source":"oxenai",
+    "prediction":"SELECT state, AVG(new_results_reported) AS avg_new_results, AVG(total_results_reported) AS avg_total_results, STRFTIME('%Y-%m', date) AS month FROM df WHERE fema_region = '4' GROUP BY state, month;",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both select the state, average of new_results_reported, average of total_results_reported, and the year-month from the date column, filtering by fema_region '4' and grouping by state and month. The capitalization of STRFTIME does not affect the statement.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what was the last single kitty wells released ?",
+    "schema":"CREATE TABLE df (id number, \"year\" number, \"title\" text, \"peak chart positions\\nus country\" number, \"peak chart positions\\nus\" number, \"album\" text)",
+    "sql":"SELECT \"title\" FROM df ORDER BY id DESC LIMIT 1",
+    "source":"squall",
+    "prediction":"SELECT \"title\" FROM df WHERE \"year\" = (SELECT MAX(\"year\") FROM df) AND \"title\" = 'Kitty Wells';",
+    "judgement":"<reason>\nStatement 1 selects the \"title\" from the row with the highest id. Statement 2 selects the \"title\" 'Kitty Wells' from the row with the highest \"year\". These are not equivalent as they select based on different criteria and potentially different rows. Also, Statement 2 has an additional filter on the title that may cause it to return an empty set.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Who did they lose to on may 9?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Opponent\" text, \"Score\" text, \"Loss\" text, \"Attendance\" real, \"Record\" text)",
+    "sql":"SELECT \"Loss\" FROM df WHERE \"Date\" = 'may 9'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Opponent\" FROM df WHERE \"Date\" = 'may 9' AND \"Loss\" = 'yes'",
+    "judgement":"<reason>\n  The first statement selects the \"Loss\" column where the \"Date\" is 'may 9'. The second statement selects the \"Opponent\" column where the \"Date\" is 'may 9' AND \"Loss\" is 'yes'. The statements select different columns and the second statement has an additional condition on the \"Loss\" column. Therefore, the statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What was the away team that faced Carlton?",
+    "schema":"CREATE TABLE df (\"Home team\" text, \"Home team score\" text, \"Away team\" text, \"Away team score\" text, \"Venue\" text, \"Crowd\" real, \"Date\" text)",
+    "sql":"SELECT \"Away team\" FROM df WHERE \"Home team\" = 'carlton'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Away team\" FROM df WHERE \"Home team\" = 'Carlton'",
+    "judgement":"<reason>\nThe SQL statements differ only in the capitalization of 'carlton' vs. 'Carlton' in the WHERE clause. SQL is generally case-insensitive for table and column names, but case-sensitivity for string comparisons in the WHERE clause depends on the database system and its configuration (collation). Some systems might treat 'carlton' and 'Carlton' as different, while others might treat them as the same. Therefore, the equivalence depends on the specific database system's case-sensitivity settings. If the database is case-insensitive, then they are equivalent. If it is case-sensitive, then they are not. Since we do not know the case sensitivity of the database, it is safest to assume they are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What aired at 10:00 when Flashpoint aired at 9:30?",
+    "schema":"CREATE TABLE df (\"8:00\" text, \"8:30\" text, \"9:00\" text, \"9:30\" text, \"10:00\" text)",
+    "sql":"SELECT \"10:00\" FROM df WHERE \"9:30\" = 'flashpoint'",
+    "source":"wikisql",
+    "prediction":"SELECT \"10:00\" FROM df WHERE \"9:30\" = 'Flashpoint'",
+    "judgement":"<reason>\nThe statements are not equivalent because SQL string comparisons are case-sensitive by default. Therefore, 'flashpoint' is different from 'Flashpoint'.\n<\/reason>\n<answer>\nfalse\n<\/answer>"
+  },
+  {
+    "query":"What is the acronym for the name Malay of Kolej Komuniti Sungai Petani?",
+    "schema":"CREATE TABLE df (\"Name in English\" text, \"Name in Malay\" text, \"Acronym\" text, \"Foundation\" text, \"Location\" text)",
+    "sql":"SELECT \"Acronym\" FROM df WHERE \"Name in Malay\" = 'kolej komuniti sungai petani'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Acronym\" FROM df WHERE \"Name in Malay\" = 'Kolej Komuniti Sungai Petani'",
+    "judgement":"<reason>\n  The two statements are not equivalent because SQL queries are case-sensitive by default when comparing string values. The first query searches for the exact string 'kolej komuniti sungai petani' (lowercase), while the second searches for 'Kolej Komuniti Sungai Petani' (title case). If the \"Name in Malay\" column contains only the title-cased version and not the lowercase version, the first query will return an empty result set, while the second query will return the corresponding acronym.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is Fractievoorzitter, when Lijsttrekker is 'No Elections', and when Year is after 2005?",
+    "schema":"CREATE TABLE df (\"Year\" real, \"Lijsttrekker\" text, \"Fractievoorzitter\" text, \"Cabinet\" text, \"Chair\" text)",
+    "sql":"SELECT \"Fractievoorzitter\" FROM df WHERE \"Lijsttrekker\" = 'no elections' AND \"Year\" > '2005'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Fractievoorzitter\" FROM df WHERE \"Lijsttrekker\" = 'No Elections' AND \"Year\" > 2005",
+    "judgement":"<reason>\n  The statements differ in the capitalization of the string literal 'no elections' vs 'No Elections' in the Lijsttrekker column. Also, Statement 1 compares \"Year\" to the string literal '2005', while Statement 2 compares \"Year\" to the numeric value 2005. Because \"Year\" is of type real, both comparisons will work, but the capitalization differences in Lijsttrekker may result in different results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which class's call sign is wokg?",
+    "schema":"CREATE TABLE df (\"Call sign\" text, \"Frequency MHz\" real, \"City of license\" text, \"ERP W\" real, \"Class\" text, \"FCC info\" text)",
+    "sql":"SELECT \"Class\" FROM df WHERE \"Call sign\" = 'wokg'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Class\" FROM df WHERE \"Call sign\" = 'wokg'",
+    "judgement":"<reason>\n  Both SQL statements perform the exact same operation: selecting the \"Class\" column from the table \"df\" where the \"Call sign\" is equal to 'wokg'. Therefore, they are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"How many companies that are not headquartered in the United States for each main industry? Show me a bar chart, and could you display by the total number from high to low?",
+    "schema":"CREATE TABLE df ( Company_ID int, Rank int, Company text, Headquarters text, Main_Industry text, Sales_billion real, Profits_billion real, Assets_billion real, Market_Value real )",
+    "sql":"SELECT Main_Industry, COUNT(Main_Industry) FROM df WHERE Headquarters <> 'USA' GROUP BY Main_Industry ORDER BY COUNT(Main_Industry) DESC",
+    "source":"nvbench",
+    "prediction":"SELECT Main_Industry, COUNT(*) AS Company_Count FROM df WHERE Headquarters != 'United States' GROUP BY Main_Industry ORDER BY Company_Count DESC",
+    "judgement":"<reason>\n  The statements are not equivalent because they use different conditions in the WHERE clause. Statement 1 uses `Headquarters <> 'USA'`, while statement 2 uses `Headquarters != 'United States'`. These conditions are not the same, as it is possible for a `Headquarters` value to be 'USA' but not 'United States', or vice versa. The aggregation is performed correctly in both queries, and the ordering is correct, but because the conditions are different, the results will be different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which games had Philadelphia as home team?",
+    "schema":"CREATE TABLE df (game VARCHAR, home_team VARCHAR)",
+    "sql":"SELECT game FROM df WHERE home_team = \"philadelphia\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT game FROM df WHERE home_team = 'Philadelphia';",
+    "judgement":"<reason>\n  The SQL statements are equivalent because string comparisons in SQL are typically case-insensitive by default, unless the database is configured to use a case-sensitive collation. Therefore, \"philadelphia\" and \"Philadelphia\" will be treated as the same value.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Venue of Pepsi arena involved what club?",
+    "schema":"CREATE TABLE df (\"Club\" text, \"Sport\" text, \"Founded\" real, \"League\" text, \"Venue\" text, \"Head Coach\" text)",
+    "sql":"SELECT \"Club\" FROM df WHERE \"Venue\" = 'pepsi arena'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Club\" FROM df WHERE \"Venue\" = 'Pepsi arena'",
+    "judgement":"<reason>\nThe statements differ only in the capitalization of 'pepsi arena' versus 'Pepsi arena' in the WHERE clause. SQL is generally case-insensitive for table and column names, but string comparisons within the WHERE clause can be case-sensitive depending on the database system and collation settings. Without knowing the specific database system and collation, we cannot definitively say they are equivalent. However, assuming a default case-sensitive collation, they are not the same.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"How many draws occured with a record of 10 losses, and 6 wins?",
+    "schema":"CREATE TABLE df (draws VARCHAR, losses VARCHAR, wins VARCHAR)",
+    "sql":"SELECT COUNT(draws) FROM df WHERE losses = 10 AND wins > 6",
+    "source":"sql_create_context",
+    "prediction":"SELECT COUNT(*) FROM df WHERE losses = '10' AND wins = '6'",
+    "judgement":"<reason>\n  The two statements are not equivalent for the following reasons:\n  1. Data Types: The WHERE clause in Statement 1 uses the integer literal 10 and 6 for comparisons with the 'losses' and 'wins' columns, respectively. Statement 2 uses the string literals '10' and '6' for comparison. Since the columns are of type VARCHAR, implicit type conversion may or may not occur depending on the database system, and even if it does, it may not be the intended behavior.\n  2. Inequality Condition: Statement 1 uses wins > 6, while statement 2 uses wins = '6'. This will result in different row selections, as Statement 1 selects rows where the wins column is greater than 6, while Statement 2 selects only rows where the wins column equals 6.\n  3. Count Function: Statement 1 uses COUNT(draws), which counts the number of non-NULL values in the 'draws' column for the selected rows. Statement 2 uses COUNT(*), which counts all rows that satisfy the WHERE clause conditions, regardless of NULL values in any column.\n\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the match total for a score over 299 and under 412 innings?",
+    "schema":"CREATE TABLE df (\"Matches\" real, \"Innings\" real, \"Not Out\" real, \"High Score\" text, \"Runs\" real, \"Average\" real)",
+    "sql":"SELECT SUM(\"Matches\") FROM df WHERE \"High Score\" = '299' AND \"Innings\" < '412'",
+    "source":"wikisql",
+    "prediction":"SELECT SUM(\"Matches\") FROM df WHERE \"Runs\" > 299 AND \"Innings\" < 412",
+    "judgement":"<reason>\nThe two SQL statements are not equivalent because they use different conditions in their WHERE clauses. Statement 1 filters based on \"High Score\" being equal to '299' and \"Innings\" being less than '412', while Statement 2 filters based on \"Runs\" being greater than 299 and \"Innings\" being less than 412. The results of the SUM(\"Matches\") will likely be different due to these different filtering criteria.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Who held the Communications Rep position in 2011?",
+    "schema":"CREATE TABLE df (position VARCHAR)",
+    "sql":"SELECT 2011 FROM df WHERE position = \"communications rep\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT position FROM df WHERE position = 'Communications Rep' AND YEAR(date_column) = 2011",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent for several reasons. First, statement 1 selects the constant value 2011, while statement 2 selects the `position` column. Second, statement 1 filters based on `position = \"communications rep\"`, while statement 2 filters based on `position = 'Communications Rep'` (note the capitalization difference) AND `YEAR(date_column) = 2011`.  Statement 2 also assumes the existence of a column named `date_column`, which is not present in the schema provided, and uses the `YEAR()` function, which is a date function.  Even if `date_column` existed, the conditions would still be different. The capitalization of the string literals also matters, as SQL string comparisons are often case-sensitive.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which Losses is the lowest one that has a Season smaller than 1920, and Draws larger than 0?",
+    "schema":"CREATE TABLE df (losses INTEGER, season VARCHAR, draws VARCHAR)",
+    "sql":"SELECT MIN(losses) FROM df WHERE season < 1920 AND draws > 0",
+    "source":"sql_create_context",
+    "prediction":"SELECT MIN(losses) FROM df WHERE CAST(season AS INTEGER) < 1920 AND CAST(draws AS INTEGER) > 0",
+    "judgement":"<reason>\n  The first query directly compares 'season' which is a VARCHAR to the integer 1920, and 'draws' which is a VARCHAR to the integer 0. Depending on the database system's implicit type conversion rules, this could lead to unexpected results or errors. The second query explicitly casts both 'season' and 'draws' to integers before performing the comparisons. This is more robust and ensures that the comparisons are performed numerically. If 'season' or 'draws' contain non-numeric values, the explicit cast in the second query would likely cause an error, which would not happen in the first query. However, if the VARCHAR columns 'season' and 'draws' always contain numeric values, and the database system performs an implicit cast to integers, the results would be the same. If the columns 'season' and 'draws' do not always contain numeric values, the queries will not be equivalent, as the implicit cast will yield unexpected results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"find the row where task_id == task_18163",
+    "schema":"CREATE TABLE df (task_id VARCHAR, prompt VARCHAR, rust_prompt VARCHAR, rust_code VARCHAR);",
+    "sql":"\nSELECT * FROM df WHERE task_id = 'task_18163';\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE task_id = 'task_18163';",
+    "judgement":"<reason>\n  Both statements select all columns from the table 'df' where the 'task_id' is equal to 'task_18163'. There are no differences in the logic or syntax.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who scored the lowest with 8 gold medals and less than 4 silver medals?",
+    "schema":"CREATE TABLE df (total INTEGER, gold VARCHAR, silver VARCHAR)",
+    "sql":"SELECT MIN(total) FROM df WHERE gold = 8 AND silver < 4",
+    "source":"sql_create_context",
+    "prediction":"SELECT MIN(total) FROM df WHERE gold = '8' AND silver < '4';",
+    "judgement":"<reason>\n  The statements are not equivalent because the data types in the WHERE clause are different. Statement 1 uses numeric literals (8 and 4) for comparison, while Statement 2 uses string literals ('8' and '4'). Since gold and silver are VARCHAR, certain databases can perform implicit type conversion to allow the statements to return the same result, while other databases will produce errors, or will return different results based on string comparison rules.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"2006 of 10 4 is in which 2000?",
+    "schema":"CREATE TABLE df (Id VARCHAR)",
+    "sql":"SELECT 2000 FROM df WHERE 2006 = \"10–4\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT Id FROM df WHERE Id LIKE '%2000%2006%10%4%'",
+    "judgement":"<reason>\n  Statement 1 selects the constant value 2000 if the condition 2006 = \"10–4\" is met.  This condition will never be met since 2006 is an integer and \"10–4\" is a string (and contains a character that is not a standard dash\/hyphen). Thus, if there are any rows in the table, the query will return 2000 for each row.  Statement 2 selects the `Id` column only for rows where the `Id` column contains \"2000\", \"2006\", \"10\", and \"4\" in that order, possibly with characters in between. The queries are not equivalent because the first query returns the constant `2000` regardless of the table's contents (as long as the table is not empty), while the second query returns `Id` based on its contents and a specific pattern.  Note the dash\/hyphen differences.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"find me all the rows where the query starts with \"",
+    "schema":"CREATE TABLE df (image VARCHAR, category VARCHAR, query VARCHAR, embedding ARRAY<REAL>, is_annotated BOOLEAN);",
+    "sql":"\nSELECT * FROM df WHERE query LIKE '\"%'\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE query LIKE '\"%';",
+    "judgement":"<reason>\n  The two SQL statements are identical. Both select all columns from the table `df` where the `query` column starts with a double quote character (`\"`). The `LIKE` operator with `'\"%'` matches any string that begins with a double quote.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What was the week ranking of the episode written by Thomas L. Moran and directed by Andrew Bernstein?",
+    "schema":"CREATE TABLE df (rank__week_ VARCHAR, written_by VARCHAR, directed_by VARCHAR)",
+    "sql":"SELECT rank__week_ FROM df WHERE written_by = \"Thomas L. Moran\" AND directed_by = \"Andrew Bernstein\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT rank__week_ FROM df WHERE written_by = 'Thomas L. Moran' AND directed_by = 'Andrew Bernstein'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because in SQL, single quotes (') and double quotes (\") are generally interchangeable for string literals. Both statements select the 'rank__week_' column from the 'df' table where the 'written_by' column is equal to \"Thomas L. Moran\" and the 'directed_by' column is equal to \"Andrew Bernstein\". The only difference is the use of single quotes in the second statement versus double quotes in the first statement around the string literals, which does not affect the meaning or outcome of the query.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the 2013 BAFA adult flag division in Aylesbury?",
+    "schema":"CREATE TABLE df (location VARCHAR)",
+    "sql":"SELECT 2013 AS _bafa_adult_flag_division FROM df WHERE location = \"aylesbury\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT * FROM df WHERE location = 'Aylesbury' AND location LIKE '%2013 BAFA adult flag division%'",
+    "judgement":"<reason>\n  Statement 1 selects the constant value 2013 and labels it as `_bafa_adult_flag_division` from the table `df` only when the `location` is exactly \"aylesbury\". Statement 2 selects all columns from the `df` table when the `location` is exactly 'Aylesbury' AND the `location` contains '%2013 BAFA adult flag division%'. The first statement returns one column with one row with the value 2013 if the location is aylesbury, and nothing otherwise. The second statement returns all columns from the table when the location is Aylesbury and contains the string '%2013 BAFA adult flag division%'. These are clearly different. Note: The case difference in the location string between the two queries is also a factor.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Name the number of events for 3031",
+    "schema":"CREATE TABLE df (\"#\" real, \"Player\" text, \"Country\" text, \"Points\" real, \"Reset points\" real, \"Events\" real)",
+    "sql":"SELECT COUNT(\"Events\") FROM df WHERE \"Points\" = '3031'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Events\" FROM df WHERE \"#\" = 3031",
+    "judgement":"<reason>\n  Statement 1 counts the number of \"Events\" where \"Points\" are equal to '3031'. Statement 2 selects the \"Events\" value where \"#\" is equal to 3031. They perform completely different operations and target different columns based on different conditions.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which Team Name has Poles of 0, and a Final Placing of 29th?",
+    "schema":"CREATE TABLE df (\"Season\" real, \"Series\" text, \"Team Name\" text, \"Races\" text, \"Wins\" text, \"Poles\" text, \"F\/Laps\" text, \"Podiums\" text, \"Points\" text, \"Final Placing\" text)",
+    "sql":"SELECT \"Team Name\" FROM df WHERE \"Poles\" = '0' AND \"Final Placing\" = '29th'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Team Name\" FROM df WHERE \"Poles\" = '0' AND \"Final Placing\" = '29th'",
+    "judgement":"<reason>\nBoth SQL statements are identical. They both select the \"Team Name\" from the table \"df\" where the \"Poles\" column is equal to '0' and the \"Final Placing\" column is equal to '29th'.\n<\/reason>\n<answer>\ntrue\n<\/answer>"
+  },
+  {
+    "query":"What is the total number of Year(s) Won, when Player is Ed Furgol, and when To Par is greater than 12?",
+    "schema":"CREATE TABLE df (\"Player\" text, \"Country\" text, \"Year(s) won\" real, \"Total\" real, \"To par\" real, \"Finish\" text)",
+    "sql":"SELECT COUNT(\"Year(s) won\") FROM df WHERE \"Player\" = 'ed furgol' AND \"To par\" > '12'",
+    "source":"wikisql",
+    "prediction":"SELECT SUM(\"Year(s) won\") FROM df WHERE \"Player\" = 'Ed Furgol' AND \"To par\" > 12",
+    "judgement":"<reason>\n  Statement 1 counts the number of rows that satisfy the condition where \"Player\" is 'ed furgol' and \"To par\" is greater than '12'. Statement 2 calculates the sum of the \"Year(s) won\" column for the rows that satisfy the condition where \"Player\" is 'Ed Furgol' and \"To par\" is greater than 12. The first statement uses COUNT, which counts rows, and the second statement uses SUM, which sums a numerical column. Also, the capitalization of 'ed furgol' and 'Ed Furgol' are different, and could result in different results depending on the database system's case sensitivity.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the average weight of the player with a height of 180 cm and plays the d position?",
+    "schema":"CREATE TABLE df (\"Position\" text, \"Jersey number\" real, \"Name v t e\" text, \"Height (cm)\" real, \"Weight (kg)\" real, \"Birthplace\" text, \"2008-09 team\" text, \"NHL rights, if any\" text)",
+    "sql":"SELECT AVG(\"Weight (kg)\") FROM df WHERE \"Height (cm)\" = '180' AND \"Position\" = 'd'",
+    "source":"wikisql",
+    "prediction":"SELECT AVG(\"Weight (kg)\") FROM df WHERE \"Height (cm)\" = 180 AND \"Position\" = 'd'",
+    "judgement":"<reason>\n  The only difference between the two SQL statements is that the first statement has '180' as a string literal, while the second statement has 180 as a numeric literal. Since the \"Height (cm)\" column is defined as a real number, both statements will be interpreted the same way by the database system and will return the same result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which Score has a Competition of world cup qualifying, and a Brazil scorers of baltazar, and a Date of march 14, 1954?",
+    "schema":"CREATE TABLE df (score VARCHAR, date VARCHAR, competition VARCHAR, brazil_scorers VARCHAR)",
+    "sql":"SELECT score FROM df WHERE competition = \"world cup qualifying\" AND brazil_scorers = \"baltazar\" AND date = \"march 14, 1954\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT score FROM df WHERE competition = 'world cup qualifying' AND brazil_scorers = 'baltazar' AND date = 'march 14, 1954'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because they both select the 'score' column from the 'df' table where the 'competition' is \"world cup qualifying\", 'brazil_scorers' is \"baltazar\", and 'date' is \"march 14, 1954\". The only difference is the use of single quotes vs double quotes to delimit the string literals. Most SQL databases treat single and double quotes the same way for string literals.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"count the number of patients whose insurance is private and year of birth is less than 1887?",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, name text, marital_status text, age text, dob text, gender text, language text, religion text, admission_type text, days_stay text, insurance text, ethnicity text, expire_flag text, admission_location text, discharge_location text, diagnosis text, dod text, dob_year text, dod_year text, admittime text, dischtime text, admityear text)",
+    "sql":"SELECT COUNT(DISTINCT df.subject_id) FROM df WHERE df.insurance = \"Private\" AND df.dob_year < \"1887\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT COUNT(*) FROM df WHERE insurance = 'private' AND CAST(dob_year AS INTEGER) < 1887;",
+    "judgement":"<reason>\n  The statements are not equivalent. Statement 1 counts distinct subject_ids, while statement 2 counts all rows. Also, statement 1 uses string comparison for dob_year while statement 2 converts dob_year to an integer and performs a numerical comparison. Furthermore, the case sensitivity of the insurance value check is different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is drug type of drug name hydrocerin?",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, icustay_id text, drug_type text, drug text, formulary_drug_cd text, route text, drug_dose text)",
+    "sql":"SELECT df.drug_type FROM df WHERE df.drug = \"Hydrocerin\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT drug_type FROM df WHERE drug = 'hydrocerin'",
+    "judgement":"<reason>\n  The two statements are equivalent because SQL is case-insensitive for column names and table names. Additionally, single quotes and double quotes are generally interchangeable for string literals in SQL.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the lowest number of field goals when the points were less than 5?",
+    "schema":"CREATE TABLE df (\"Player\" text, \"Position\" text, \"Starter\" text, \"Touchdowns\" real, \"Extra points\" real, \"Field goals\" real, \"Points\" real)",
+    "sql":"SELECT MIN(\"Field goals\") FROM df WHERE \"Points\" < '5'",
+    "source":"wikisql",
+    "prediction":"SELECT MIN(\"Field goals\") FROM df WHERE \"Points\" < 5",
+    "judgement":"<reason>\n  Statement 1 compares the \"Points\" column to the string '5', while Statement 2 compares it to the number 5. Since \"Points\" is a real data type, both comparisons will effectively be the same. SQL will implicitly convert the string '5' to the number 5 for the comparison.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Visualize a pie chart about the proportion of All_Games and ACC_Percent.",
+    "schema":"CREATE TABLE df (Team_ID int, School_ID int, Team_Name text, ACC_Regular_Season text, ACC_Percent text, ACC_Home text, ACC_Road text, All_Games text, All_Games_Percent int, All_Home text, All_Road text, All_Neutral text)",
+    "sql":"SELECT All_Games, ACC_Percent FROM df",
+    "source":"nvbench",
+    "prediction":"SELECT 'All_Games' AS Category, SUM(All_Games_Percent) AS Percentage FROM df UNION ALL SELECT 'ACC_Percent' AS Category, SUM(CAST(ACC_Percent AS int)) AS Percentage FROM df",
+    "judgement":"<reason>\nStatement 1 selects the `All_Games` and `ACC_Percent` columns directly from the `df` table, returning a row for each row in the table with the values from those columns. Statement 2 calculates the sum of `All_Games_Percent` and `ACC_Percent` (after casting it to an integer) and presents those sums as a single row with two category labels. Statement 1 returns the raw values, while Statement 2 aggregates and summarizes the data. Additionally, the `ACC_Percent` column is being cast as an integer in statement 2, which could lose information if the column is a float. Therefore, the statements are not equivalent.\n<\/reason>\n<answer>\nfalse\n<\/answer>"
+  },
+  {
+    "query":"show me all the images where bald = 1 and mustache = -1 attractive = 1",
+    "schema":"CREATE TABLE df (images VARCHAR, 5_o_Clock_Shadow INTEGER, Arched_Eyebrows INTEGER, Attractive INTEGER, Bags_Under_Eyes INTEGER, Bald INTEGER, Bangs INTEGER, Big_Lips INTEGER, Big_Nose INTEGER, Black_Hair INTEGER, Blond_Hair INTEGER, Blurry INTEGER, Brown_Hair INTEGER, Bushy_Eyebrows INTEGER, Chubby INTEGER, Double_Chin INTEGER, Eyeglasses INTEGER, Goatee INTEGER, Gray_Hair INTEGER, Heavy_Makeup INTEGER, High_Cheekbones INTEGER, Male INTEGER, Mouth_Slightly_Open INTEGER, Mustache INTEGER, Narrow_Eyes INTEGER, No_Beard INTEGER, Oval_Face INTEGER, Pale_Skin INTEGER, Pointy_Nose INTEGER, Receding_Hairline INTEGER, Rosy_Cheeks INTEGER, Sideburns INTEGER, Smiling INTEGER, Straight_Hair INTEGER, Wavy_Hair INTEGER, Wearing_Earrings INTEGER, Wearing_Hat INTEGER, Wearing_Lipstick INTEGER, Wearing_Necklace INTEGER, Wearing_Necktie INTEGER, Young INTEGER);",
+    "sql":"SELECT images FROM df WHERE Bald = 1 AND Mustache = -1 AND Attractive = 1",
+    "source":"oxenai",
+    "prediction":"SELECT images FROM df WHERE Bald = 1 AND Mustache = -1 AND Attractive = 1",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both select the 'images' column from the 'df' table where 'Bald' is 1, 'Mustache' is -1, and 'Attractive' is 1.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"find all users that are on the \"Hacker\" plan",
+    "schema":"CREATE TABLE df (name VARCHAR, username VARCHAR, email VARCHAR, role VARCHAR, plan VARCHAR, storage_usage_gb VARCHAR, egress_usage_gb FLOAT, inserted_at VARCHAR, updated_at VARCHAR);",
+    "sql":"\nSELECT * FROM df WHERE plan = 'Hacker'\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE plan = 'Hacker';",
+    "judgement":"<reason>\n  The two SQL statements are identical. Both select all columns and rows from the table 'df' where the 'plan' column is equal to 'Hacker'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what is ethnicity of subject name stephanie suchan?",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, name text, marital_status text, age text, dob text, gender text, language text, religion text, admission_type text, days_stay text, insurance text, ethnicity text, expire_flag text, admission_location text, discharge_location text, diagnosis text, dod text, dob_year text, dod_year text, admittime text, dischtime text, admityear text)",
+    "sql":"SELECT df.ethnicity FROM df WHERE df.name = \"Stephanie Suchan\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT ethnicity FROM df WHERE name = 'stephanie suchan'",
+    "judgement":"<reason>\n  The statements are not equivalent because SQL string comparisons are typically case-sensitive. Therefore, \"Stephanie Suchan\" is not the same as \"stephanie suchan\". The case of the data in the `name` column would determine the output.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"March of 26 has what lowest game?",
+    "schema":"CREATE TABLE df (\"Game\" real, \"March\" real, \"Opponent\" text, \"Score\" text, \"Record\" text)",
+    "sql":"SELECT MIN(\"Game\") FROM df WHERE \"March\" = '26'",
+    "source":"wikisql",
+    "prediction":"SELECT MIN(\"Game\") FROM df WHERE \"March\" = 26",
+    "judgement":"<reason>\n  Statement 1 compares the \"March\" column to the string '26', while Statement 2 compares it to the number 26. While some databases might implicitly convert the string '26' to the number 26 for comparison, this behavior is not guaranteed across all SQL implementations. Therefore, they are not necessarily equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the lowest crowd with home team richmond?",
+    "schema":"CREATE TABLE df (\"Home team\" text, \"Home team score\" text, \"Away team\" text, \"Away team score\" text, \"Venue\" text, \"Crowd\" real, \"Date\" text)",
+    "sql":"SELECT MIN(\"Crowd\") FROM df WHERE \"Home team\" = 'richmond'",
+    "source":"wikisql",
+    "prediction":"SELECT MIN(\"Crowd\") FROM df WHERE \"Home team\" = 'richmond'",
+    "judgement":"<reason>\n  The two SQL statements are identical. Both select the minimum crowd from the table df where the home team is 'richmond'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who was the visitor on April 2?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Visitor\" text, \"Score\" text, \"Home\" text, \"Decision\" text, \"Attendance\" real, \"Record\" text)",
+    "sql":"SELECT \"Visitor\" FROM df WHERE \"Date\" = 'april 2'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Visitor\" FROM df WHERE \"Date\" = 'April 2'",
+    "judgement":"<reason>\n  The equivalence of these statements depends on the case sensitivity of the database system and the collation being used for the \"Date\" column. Some systems might treat 'april 2' and 'April 2' as the same, while others might not. Without knowing the specific database system and collation, it's impossible to definitively say they are equivalent. However, it is safer to assume that they are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Visualize a bar chart about the distribution of All_Home and the average of Team_ID , and group by attribute All_Home, and rank by the X-axis in ascending please.",
+    "schema":"CREATE TABLE df ( Team_ID int, School_ID int, Team_Name text, ACC_Regular_Season text, ACC_Percent text, ACC_Home text, ACC_Road text, All_Games text, All_Games_Percent int, All_Home text, All_Road text, All_Neutral text )",
+    "sql":"SELECT All_Home, AVG(Team_ID) FROM df GROUP BY All_Home ORDER BY All_Home",
+    "source":"nvbench",
+    "prediction":"SELECT All_Home, AVG(Team_ID) AS Avg_Team_ID FROM df GROUP BY All_Home ORDER BY All_Home ASC",
+    "judgement":"<reason>\n  The two SQL statements are equivalent. Both statements select the 'All_Home' column and the average of 'Team_ID', grouped by 'All_Home'. The first statement orders the result by 'All_Home' in ascending order by default. The second statement explicitly orders the result by 'All_Home' in ascending order using 'ORDER BY All_Home ASC'. The 'AS Avg_Team_ID' part of the second statement is just an alias and does not change the meaning of the query.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What position was pick # 54?",
+    "schema":"CREATE TABLE df (\"Pick #\" real, \"CFL Team\" text, \"Player\" text, \"Position\" text, \"College\" text)",
+    "sql":"SELECT \"Position\" FROM df WHERE \"Pick #\" = '54'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Position\" FROM df WHERE \"Pick #\" = 54;",
+    "judgement":"<reason>\n  The two statements are equivalent because the database system will implicitly convert the string '54' to the number 54 when comparing it to the \"Pick #\" column, which is a real number.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"How many cars does Gregg Mixon own?",
+    "schema":"CREATE TABLE df (car_s_ VARCHAR, listed_owner_s_ VARCHAR)",
+    "sql":"SELECT COUNT(car_s_) FROM df WHERE listed_owner_s_ = \"Gregg Mixon\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT COUNT(*) FROM df WHERE listed_owner_s_ = 'Gregg Mixon';",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because COUNT(*) counts all rows that satisfy the WHERE clause, while COUNT(car_s_) counts the non-null values in the car_s_ column for the rows that satisfy the WHERE clause. Since there are no constraints mentioned that car_s_ can be null, and the context typically assumes no null values unless specified otherwise, the results of the two COUNT statements will be the same. Also, the string literals are equivalent because double quotes and single quotes are both used to represent string literals in SQL.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Visualize the relationship between Team_ID and ACC_Percent , and group by attribute All_Road.",
+    "schema":"CREATE TABLE basketball_match (Team_ID int, School_ID int, Team_Name text, ACC_Regular_Season text, ACC_Percent text, ACC_Home text, ACC_Road text, All_Games text, All_Games_Percent int, All_Home text, All_Road text, All_Neutral text)",
+    "sql":"SELECT Team_ID, ACC_Percent FROM df GROUP BY All_Road",
+    "source":"nvbench",
+    "prediction":"SELECT Team_ID, ACC_Percent, All_Road FROM basketball_match GROUP BY All_Road, Team_ID, ACC_Percent",
+    "judgement":"<reason>\nStatement 1 selects Team_ID and ACC_Percent from a table aliased as 'df' (unspecified in the schema, making it ambiguous), and groups the results by All_Road.  It doesn't specify how Team_ID and ACC_Percent are aggregated within each All_Road group. This makes the query invalid, as it does not specify an aggregate function to use for the attributes that are not in the GROUP BY clause.\n\nStatement 2 selects Team_ID, ACC_Percent, and All_Road from the 'basketball_match' table, and groups the results by All_Road, Team_ID, and ACC_Percent. This is a valid statement.\n\nBecause the table names are different, and statement 1 is invalid because it does not use an aggregate function for the attributes not in the GROUP BY clause, the statements are not equivalent.\n<\/reason>\n<answer>\nfalse\n<\/answer>"
+  },
+  {
+    "query":"Compare llama_prediction and qwen_prediction_retry accuracy. True value is in the label column",
+    "schema":"CREATE TABLE df (question VARCHAR, passage VARCHAR, idx INTEGER, label INTEGER, qwen_prediction VARCHAR, llama_prediction VARCHAR, qwen_prediction_retry VARCHAR);",
+    "sql":"\nSELECT AVG(CASE WHEN llama_prediction = label THEN 1 ELSE 0 END) AS llama_accuracy, AVG(CASE WHEN qwen_prediction_retry = label THEN 1 ELSE 0 END) AS qwen_retry_accuracy FROM df\n",
+    "source":"oxenai",
+    "prediction":"SELECT AVG(CASE WHEN llama_prediction = label THEN 1 ELSE 0 END) AS llama_accuracy, AVG(CASE WHEN qwen_prediction_retry = label THEN 1 ELSE 0 END) AS qwen_retry_accuracy FROM df;",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both calculate the average accuracy of llama_prediction and qwen_prediction_retry against the label column from the df table.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Name the tournament for march 25, 2012",
+    "schema":"CREATE TABLE df (tournament VARCHAR, date VARCHAR)",
+    "sql":"SELECT tournament FROM df WHERE date = \"march 25, 2012\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT tournament FROM df WHERE date = '2012-03-25'",
+    "judgement":"<reason>\nThe two statements are not equivalent because the date formats used in the WHERE clause are different. Statement 1 uses \"march 25, 2012\" while Statement 2 uses '2012-03-25'. The database will only return results if the date column is stored in the exact format specified in the WHERE clause.  If the date column in the table df is stored as 'march 25, 2012', then only the first query will return results. If the date column is stored as '2012-03-25', then only the second query will return results. If the date column is stored in a format other than these two, then neither query will return a result, or the database may attempt to implicitly convert the string to a date format.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Name the winner for date of nov 5, 1987",
+    "schema":"CREATE TABLE df (\"S No\" real, \"Team (A)\" text, \"Team (B)\" text, \"Winner\" text, \"Margin\" text, \"Match Date\" text)",
+    "sql":"SELECT \"Winner\" FROM df WHERE \"Match Date\" = 'Nov 5, 1987'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Winner\" FROM df WHERE \"Match Date\" = 'nov 5, 1987'",
+    "judgement":"<reason>\n  The SQL statements differ only in the capitalization of the month in the date string. Since the \"Match Date\" column is defined as TEXT and string comparisons in SQL are typically case-sensitive by default, the two statements are not equivalent. They might return different (or no) results depending on the actual data stored in the \"Match Date\" column.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Show me about the distribution of meter_300 and meter_100 in a bar chart, and I want to show Y from low to high order.",
+    "schema":"CREATE TABLE df (ID int, name text, Nationality text, meter_100 real, meter_200 text, meter_300 text, meter_400 text, meter_500 text, meter_600 text, meter_700 text, Time text)",
+    "sql":"SELECT meter_300, meter_100 FROM df ORDER BY meter_100",
+    "source":"nvbench",
+    "prediction":"SELECT meter_300, meter_100, COUNT(*) FROM df GROUP BY meter_300, meter_100 ORDER BY meter_300, meter_100 ASC",
+    "judgement":"<reason>\n  Statement 1 selects `meter_300` and `meter_100` and orders the result by `meter_100`. Statement 2 selects `meter_300`, `meter_100`, and the count of each group, grouping by `meter_300` and `meter_100`, and ordering by `meter_300` then `meter_100`. These statements are not equivalent. Statement 2 will return aggregated counts whereas statement 1 will not. Also, the order by clauses are different, and the result set will be different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What was the original air date of this episode that was written by Debbie Sarjeant?",
+    "schema":"CREATE TABLE df (original_air_date VARCHAR, written_by VARCHAR)",
+    "sql":"SELECT original_air_date FROM df WHERE written_by = \"Debbie Sarjeant\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT original_air_date FROM df WHERE written_by = 'Debbie Sarjeant'",
+    "judgement":"<reason>\n  In SQL, single quotes and double quotes are often used interchangeably for string literals. Therefore, the two statements are equivalent because they both select the `original_air_date` from the `df` table where the `written_by` column is equal to the string \"Debbie Sarjeant\".\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Name the No. 10 which has a No. 8 of jackson, and a No. 9 of jayden?",
+    "schema":"CREATE TABLE df (\"Region (year)\" text, \"No. 1\" text, \"No. 2\" text, \"No. 3\" text, \"No. 4\" text, \"No. 5\" text, \"No. 6\" text, \"No. 7\" text, \"No. 8\" text, \"No. 9\" text, \"No. 10\" text)",
+    "sql":"SELECT \"No. 10\" FROM df WHERE \"No. 8\" = 'jackson' AND \"No. 9\" = 'jayden'",
+    "source":"wikisql",
+    "prediction":"SELECT \"No. 10\" FROM df WHERE \"No. 8\" = 'jackson' AND \"No. 9\" = 'jayden'",
+    "judgement":"<reason>\n  Both SQL statements are identical. They both select the column \"No. 10\" from the table df where \"No. 8\" equals 'jackson' and \"No. 9\" equals 'jayden'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the total number of medals when there are 18 gold medals?",
+    "schema":"CREATE TABLE df (\"Rank\" text, \"Nation\" text, \"Gold\" real, \"Silver\" real, \"Bronze\" real, \"Total\" real)",
+    "sql":"SELECT SUM(\"Total\") FROM df WHERE \"Gold\" = '18'",
+    "source":"wikisql",
+    "prediction":"SELECT SUM(\"Total\") FROM df WHERE \"Gold\" = 18",
+    "judgement":"<reason>\n  Statement 1 compares the \"Gold\" column to the string '18', while Statement 2 compares it to the number 18. Because the \"Gold\" column is defined as a real number, some SQL implementations might implicitly convert the string '18' to the number 18, making the statements equivalent. However, this behavior is not guaranteed across all SQL implementations or database systems. It depends on the specific database system's type coercion rules. Therefore, it's best practice to use the correct data type in the WHERE clause. While the result *might* be the same in some cases, they are not strictly equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"let me know the location of admission and gender of patient jane dillard.",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, name text, marital_status text, age text, dob text, gender text, language text, religion text, admission_type text, days_stay text, insurance text, ethnicity text, expire_flag text, admission_location text, discharge_location text, diagnosis text, dod text, dob_year text, dod_year text, admittime text, dischtime text, admityear text)",
+    "sql":"SELECT df.gender, df.admission_location FROM df WHERE df.name = \"Jane Dillard\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT admission_location, gender FROM df WHERE name = 'jane dillard';",
+    "judgement":"<reason>\n  The statements are not equivalent because the case sensitivity of the 'name' column is not specified. While some database systems might be case-insensitive by default, others are case-sensitive. Therefore, \"Jane Dillard\" and \"jane dillard\" might refer to different rows. Also, the order of columns is different in the SELECT clause.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"how many gold medals did this country win during these olympics ?",
+    "schema":"CREATE TABLE df (id number, \"medal\" text, \"name\" text, \"sport\" text, \"event\" text, \"date\" text)",
+    "sql":"SELECT COUNT(*) FROM df WHERE \"medal\" = 'gold'",
+    "source":"squall",
+    "prediction":"SELECT COUNT(*) FROM df WHERE medal = 'gold';",
+    "judgement":"<reason>\n  Statement 1 explicitly quotes the column name \"medal\" using double quotes, making it case-sensitive. Statement 2 does not quote the column name, so the database will likely treat it as case-insensitive. However, since the table was created with the column name \"medal\" in lowercase, and most SQL implementations are case-insensitive by default for unquoted identifiers, both statements will likely function identically and return the same result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"which Surface has Opponents in the final of mark edmondson sherwood stewart, and a Tournament of dallas , u.s.?",
+    "schema":"CREATE TABLE df (\n    \"Outcome\" text,\n    \"Date\" real,\n    \"Tournament\" text,\n    \"Surface\" text,\n    \"Partner\" text,\n    \"Opponents in the final\" text,\n    \"Score in the final\" text\n)",
+    "sql":"SELECT \"Surface\" FROM df WHERE \"Opponents in the final\" = 'mark edmondson sherwood stewart' AND \"Tournament\" = 'dallas , u.s.'",
+    "source":"wikisql",
+    "prediction":"SELECT Surface FROM df WHERE \"Opponents in the final\" = 'mark edmondson sherwood stewart' AND Tournament = 'dallas , u.s.'",
+    "judgement":"<reason>\n  The statements are equivalent because SQL is case-insensitive with regards to column names when they are not quoted.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Show me all the places where build_passed is true but test_passed is false",
+    "schema":"CREATE TABLE df (task_id VARCHAR, prompt VARCHAR, test_list VARCHAR, input VARCHAR, full_response VARCHAR, response VARCHAR, template VARCHAR, build_passed BOOLEAN, build_stdout VARCHAR, build_stderr VARCHAR, clippy_passed BOOLEAN, clippy_stdout VARCHAR, clippy_stderr VARCHAR, test_passed BOOLEAN, test_stderr VARCHAR, test_stdout VARCHAR, idx INTEGER);",
+    "sql":"\nSELECT * FROM df WHERE build_passed = true AND test_passed = false\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE build_passed = TRUE AND test_passed = FALSE;",
+    "judgement":"<reason>\n  The statements are equivalent because SQL is case-insensitive for keywords and boolean values TRUE and FALSE are equivalent to true and false.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Show different teams of technicians and the number of technicians in each team, list by the bar in desc.",
+    "schema":"CREATE TABLE df ( technician_id real, Name text, Team text, Starting_Year real, Age int )",
+    "sql":"SELECT Team, COUNT(*) FROM df GROUP BY Team ORDER BY Team DESC",
+    "source":"nvbench",
+    "prediction":"SELECT Team, COUNT(*) AS Technician_Count FROM df GROUP BY Team ORDER BY Technician_Count DESC;",
+    "judgement":"<reason>\n  The statements are not equivalent because the first statement orders the results alphabetically by the 'Team' column in descending order. The second statement orders the results numerically by the count of technicians in each team (aliased as 'Technician_Count') in descending order. The results will be ordered differently.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Who were the victims of the US ship that sank in the Mississippi River near Memphis?",
+    "schema":"CREATE TABLE df (principal_victims VARCHAR, nat VARCHAR, where_sunk VARCHAR)",
+    "sql":"SELECT principal_victims FROM df WHERE nat = \"us\" AND where_sunk = \"mississippi river near memphis\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT principal_victims FROM df WHERE nat = 'US' AND where_sunk = 'Mississippi River near Memphis'",
+    "judgement":"<reason>\n  The statements are not equivalent because SQL string comparisons are case-sensitive by default in many database systems. Therefore, \"us\" is different from \"US\" and \"mississippi river near memphis\" is different from \"Mississippi River near Memphis\". The query will return different results, or possibly no results if the exact string case is not found in the table.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the surface of the match when the opponent was iryna bremond valeria savinykh?",
+    "schema":"CREATE TABLE df (\"Outcome\" text, \"Date\" text, \"Tournament\" text, \"Surface\" text, \"Partner\" text, \"Opponents\" text, \"Score\" text)",
+    "sql":"SELECT \"Surface\" FROM df WHERE \"Opponents\" = 'iryna bremond valeria savinykh'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Surface\" FROM df WHERE \"Opponents\" = 'iryna bremond valeria savinykh'",
+    "judgement":"<reason>\n  Both SQL statements are identical. They both select the \"Surface\" column from the table \"df\" where the \"Opponents\" column is equal to 'iryna bremond valeria savinykh'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the mean huc example code when the example name's lower snake, there are 6 digits, and less than 3 levels?",
+    "schema":"CREATE TABLE df (\"Name\" text, \"Level\" real, \"Digits\" real, \"Average size (square miles)\" text, \"Number of HUs (approximate)\" real, \"Example name\" text, \"Example code (HUC)\" real)",
+    "sql":"SELECT AVG(\"Example code (HUC)\") FROM df WHERE \"Example name\" = 'lower snake' AND \"Digits\" = '6' AND \"Level\" < '3'",
+    "source":"wikisql",
+    "prediction":"SELECT AVG(\"Example code (HUC)\") FROM df WHERE LOWER(\"Example name\") = 'snake' AND \"Digits\" = 6 AND \"Level\" < 3",
+    "judgement":"<reason>\nStatement 1 searches for \"Example name\" exactly equal to 'lower snake', while statement 2 converts \"Example name\" to lowercase and searches for 'snake'.  Also, statement 1 compares \"Digits\" against the string '6', while statement 2 compares \"Digits\" against the numeric value 6. The same applies to \"Level\".\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"show me all the correct == true",
+    "schema":"CREATE TABLE df (id INTEGER, question VARCHAR, ground-truth VARCHAR, ground-truth-final INTEGER, answer VARCHAR, final-answer VARCHAR, correct BOOLEAN);",
+    "sql":"SELECT * FROM df WHERE correct = TRUE",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE correct = TRUE;",
+    "judgement":"<reason>\n  The SQL statements are identical. The semicolon at the end of the second statement does not change its functionality.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Name the candidates for john boyle",
+    "schema":"CREATE TABLE df (\"District\" text, \"Incumbent\" text, \"Party\" text, \"First elected\" text, \"Result\" text, \"Candidates\" text)",
+    "sql":"SELECT \"Candidates\" FROM df WHERE \"Incumbent\" = 'John Boyle'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Candidates\" FROM df WHERE \"Incumbent\" = 'john boyle'",
+    "judgement":"<reason>\n  The equivalence of the statements depends on the specific database system and its configuration regarding case sensitivity for string comparisons. Some database systems are case-insensitive by default, while others are case-sensitive. Without knowing the specific database and its configuration, we cannot definitively say whether 'John Boyle' and 'john boyle' will be treated as the same value. If the database is case-sensitive, the statements are not equivalent, as they will return different (possibly empty) result sets if the \"Incumbent\" column contains only \"John Boyle\" or only \"john boyle\". If the database is case-insensitive, the statements are equivalent. Since we are not given that information, we must assume they are not equivalent, as case sensitivity is the default for most databases.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What artist's song was performed in the week with theme of Billboard #1?",
+    "schema":"CREATE TABLE df ( artist VARCHAR, theme VARCHAR )",
+    "sql":"SELECT artist FROM df WHERE theme = \"billboard #1\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT artist FROM df WHERE theme = 'Billboard #1';",
+    "judgement":"<reason>\n  The two statements are equivalent because SQL treats single quotes (') and double quotes (\") interchangeably for string literals. Both statements select the 'artist' from the table 'df' where the 'theme' is equal to the string 'billboard #1' (or 'Billboard #1' - case sensitivity depends on the database collation).\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the 1985 value for the year when GDP as of 2012 after PPP was 369.38?",
+    "schema":"CREATE TABLE df (gdp_as_of_2012_after_purchasing_power_parity__ppp__calculations__usd_billions_ VARCHAR)",
+    "sql":"SELECT 1985 FROM df WHERE gdp_as_of_2012_after_purchasing_power_parity__ppp__calculations__usd_billions_ = \"369.38\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT \"1985\" FROM df WHERE gdp_as_of_2012_after_purchasing_power_parity__ppp__calculations__usd_billions_ = '369.38'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent. The only difference is the use of double quotes vs single quotes around the literal \"369.38\" in the WHERE clause. SQL treats single and double quotes interchangeably for string literals. Also, the first statement returns the integer 1985, while the second statement returns the string '1985', but since the column type returned isn't specified as part of the schema, these are considered equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who is the youngest male?",
+    "schema":"CREATE TABLE df (name VARCHAR, gender VARCHAR, age INTEGER)",
+    "sql":"SELECT name FROM df WHERE gender = 'male' AND age = (SELECT MIN(age) FROM df WHERE gender = 'male')",
+    "source":"sql_create_context",
+    "prediction":"SELECT name FROM df WHERE gender = 'male' ORDER BY age ASC LIMIT 1",
+    "judgement":"<reason>\nStatement 1 selects the names of all males who have the minimum age among males. Statement 2 selects the name of one male who has the minimum age among males. If there are multiple males with the same minimum age, Statement 1 will return all of their names, while statement 2 will only return one. Also, if no males exist, statement 1 returns an empty set, while statement 2 may return an error depending on the database system. Because Statement 1 can return multiple rows, while Statement 2 will return 1 row or an error, they are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"give me the number of patients less than 45 years who were hospitalized for more than 20 days.",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, name text, marital_status text, age text, dob text, gender text, language text, religion text, admission_type text, days_stay text, insurance text, ethnicity text, expire_flag text, admission_location text, discharge_location text, diagnosis text, dod text, dob_year text, dod_year text, admittime text, dischtime text, admityear text)",
+    "sql":"SELECT COUNT(DISTINCT df.subject_id) FROM df WHERE df.age < \"45\" AND df.days_stay > \"20\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT COUNT(*) FROM df WHERE CAST(age AS INTEGER) < 45 AND CAST(days_stay AS INTEGER) > 20",
+    "judgement":"<reason>\n  Statement 1 compares string values for age and days_stay to string literals \"45\" and \"20\" respectively. Statement 2 converts age and days_stay to integers before comparison with the integer literals 45 and 20. If the age and days_stay columns contain only numeric data, and the string representation of the numbers matches their integer values, then the queries are equivalent. However, since the schema defines age and days_stay as TEXT, there's no guarantee that every value in those columns can be successfully cast to an integer, or that their string representation is such that a lexicographical comparison is equivalent to a numerical comparison. For example, \"100\" < \"45\" is true for string comparison but false for integer comparison. Also, if there are non-numeric values in age or days_stay, CAST(age AS INTEGER) or CAST(days_stay AS INTEGER) will return NULL, and the corresponding WHERE clause will evaluate to UNKNOWN, filtering out that row. This can lead to a different count than the first query.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which stage was being played in Romania?",
+    "schema":"CREATE TABLE df (\"Competition\" text, \"Stage\" text, \"Venue\" text, \"Date\" text, \"Result\" text)",
+    "sql":"SELECT \"Stage\" FROM df WHERE \"Venue\" = 'romania'",
+    "source":"wikisql",
+    "prediction":"SELECT Stage FROM df WHERE Venue = 'Romania';",
+    "judgement":"<reason>\n  The column names in the table \"df\" are case-sensitive because they are enclosed in double quotes when the table was created. Therefore, \"Stage\" is different from Stage and \"Venue\" is different from Venue. Also, the value 'romania' is different from 'Romania' due to case sensitivity.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"You can return a bar chart with employees' first names and their salaries, display by the y axis from high to low.",
+    "schema":"CREATE TABLE df (EMPLOYEE_ID decimal(6,0), FIRST_NAME varchar(20), LAST_NAME varchar(25), EMAIL varchar(25), PHONE_NUMBER varchar(20), HIRE_DATE date, JOB_ID varchar(10), SALARY decimal(8,2), COMMISSION_PCT decimal(2,2), MANAGER_ID decimal(6,0), DEPARTMENT_ID decimal(4,0))",
+    "sql":"SELECT FIRST_NAME, SALARY FROM df ORDER BY SALARY DESC",
+    "source":"nvbench",
+    "prediction":"SELECT FIRST_NAME, SALARY FROM df ORDER BY SALARY DESC",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both select the FIRST_NAME and SALARY columns from the table df and order the results in descending order based on the SALARY column.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"For those employees whose salary is in the range of 8000 and 12000 and commission is not null or department number does not equal to 40, visualize a bar chart about the distribution of job_id and the average of salary , and group by attribute job_id, sort by the JOB_ID from low to high.",
+    "schema":"CREATE TABLE df ( EMPLOYEE_ID decimal(6,0), FIRST_NAME varchar(20), LAST_NAME varchar(25), EMAIL varchar(25), PHONE_NUMBER varchar(20), HIRE_DATE date, JOB_ID varchar(10), SALARY decimal(8,2), COMMISSION_PCT decimal(2,2), MANAGER_ID decimal(6,0), DEPARTMENT_ID decimal(4,0) )",
+    "sql":"SELECT JOB_ID, AVG(SALARY) FROM df WHERE SALARY BETWEEN 8000 AND 12000 AND COMMISSION_PCT <> \"null\" OR DEPARTMENT_ID <> 40 GROUP BY JOB_ID ORDER BY JOB_ID",
+    "source":"nvbench",
+    "prediction":"SELECT JOB_ID, AVG(SALARY) AS AVG_SALARY FROM df WHERE (SALARY BETWEEN 8000 AND 12000 AND COMMISSION_PCT IS NOT NULL) OR DEPARTMENT_ID <> 40 GROUP BY JOB_ID ORDER BY JOB_ID ASC",
+    "judgement":"<reason>\nStatement 1 uses `COMMISSION_PCT <> \"null\"` which is incorrect for checking for null values.  SQL uses `IS NOT NULL` to check for the existence of values instead. Statement 2 uses the correct syntax, so the statements are not equivalent. The addition of `AVG_SALARY` alias and the `ASC` specifier on the order by clause do not change the result. However, the way NULL values are handled does affect the result.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is the competition when the result is 2-1?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Venue\" text, \"Score\" text, \"Result\" text, \"Competition\" text)",
+    "sql":"SELECT \"Competition\" FROM df WHERE \"Result\" = '2-1'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Competition\" FROM df WHERE \"Result\" = '2-1'",
+    "judgement":"<reason>\n  Both SQL statements select the \"Competition\" column from the table \"df\" where the \"Result\" column is equal to '2-1'. They perform the exact same operation and will return the same result set.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what was the only tribunal to pronounce zero sentences ?",
+    "schema":"CREATE TABLE df (id number, \"tribunal\" text, \"number of autos da fe\" number, \"executions in persona\" number, \"executions in effigie\" number, \"penanced\" number, \"total\" number)",
+    "sql":"SELECT \"tribunal\" FROM df WHERE \"total\" = 0",
+    "source":"squall",
+    "prediction":"SELECT tribunal FROM df WHERE \"total\" = 0;",
+    "judgement":"<reason>\n  The only difference between the two statements is the use of quotation marks around the column name \"tribunal\" in the first statement. SQL is generally case-insensitive and often allows column names without quotation marks unless they contain spaces or reserved keywords. In this case, \"tribunal\" does not seem to be a reserved keyword or contain spaces, so the quotation marks are optional.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which Game has a Record of 27-11-10?",
+    "schema":"CREATE TABLE df (\"Game\" real, \"March\" real, \"Opponent\" text, \"Score\" text, \"Record\" text)",
+    "sql":"SELECT AVG(\"Game\") FROM df WHERE \"Record\" = '27-11-10'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Game\" FROM df WHERE \"Record\" = '27-11-10'",
+    "judgement":"<reason>\nStatement 1 calculates the average of the \"Game\" column for rows where \"Record\" is '27-11-10'. Statement 2 selects the \"Game\" values themselves for rows where \"Record\" is '27-11-10'. These are different operations; one returns an average, and the other returns the individual game values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Count of posts by month. Simple count of posts by month",
+    "schema":"CREATE TABLE df (    Id number,    PostTypeId number,    AcceptedAnswerId number,    ParentId number,    CreationDate time,    DeletionDate time,    Score number,    ViewCount number,    Body text,    OwnerUserId number,    OwnerDisplayName text,    LastEditorUserId number,    LastEditorDisplayName text,    LastEditDate time,    LastActivityDate time,    Title text,    Tags text,    AnswerCount number,    CommentCount number,    FavoriteCount number,    ClosedDate time,    CommunityOwnedDate time,    ContentLicense text)",
+    "sql":"SELECT (TIME_TO_STR(df.CreationDate, '%Y') * 12) + TIME_TO_STR(df.CreationDate, '%m') AS yearmonth, COUNT(*) AS postcount FROM df AS p GROUP BY TIME_TO_STR(df.CreationDate, '%Y'), TIME_TO_STR(df.CreationDate, '%m') ORDER BY TIME_TO_STR(df.CreationDate, '%Y'), TIME_TO_STR(df.CreationDate, '%m')",
+    "source":"sede",
+    "prediction":"SELECT strftime('%Y-%m', CreationDate) AS Month, COUNT(*) AS PostCount FROM df GROUP BY Month",
+    "judgement":"<reason>\nStatement 1 calculates a `yearmonth` value by multiplying the year by 12 and adding the month, which is then used for grouping and ordering. Statement 2 uses the `strftime` function to format the `CreationDate` as 'YYYY-MM' and aliases it as `Month`. This `Month` alias is then used to group the results. The first statement calculates the yearmonth as a number, while the second statement creates a string 'YYYY-MM'. Thus the results will be different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What time (cst) has and NFL recap of recap with october 19, 2008 as the date?",
+    "schema":"CREATE TABLE df (\"Week\" real, \"Date\" text, \"Time (CST)\" text, \"Opponent\" text, \"Result\" text, \"Game site\" text, \"Record\" text, \"NFL Recap\" text)",
+    "sql":"SELECT \"Time (CST)\" FROM df WHERE \"NFL Recap\" = 'recap' AND \"Date\" = 'october 19, 2008'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Time (CST)\" FROM df WHERE \"NFL Recap\" = 'recap' AND \"Date\" = 'October 19, 2008'",
+    "judgement":"<reason>\nThe statements are not equivalent because the date strings differ in capitalization. Statement 1 uses 'october' while Statement 2 uses 'October'. SQL string comparisons are case-sensitive by default in many database systems. Therefore, if the \"Date\" column contains 'October 19, 2008' but not 'october 19, 2008', the first query will return an empty set while the second query will return values.\n<\/reason>\n<answer>\nfalse\n<\/answer>"
+  },
+  {
+    "query":"What is the release date of the CD by EG Records in the UK?",
+    "schema":"CREATE TABLE df (\"Country\" text, \"Release Date\" real, \"Music Label\" text, \"Media\" text, \"Catalogue Number\" text)",
+    "sql":"SELECT SUM(\"Release Date\") FROM df WHERE \"Media\" = 'cd' AND \"Country\" = 'uk' AND \"Music Label\" = 'eg records'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Release Date\" FROM df WHERE \"Music Label\" = 'EG Records' AND \"Country\" = 'UK' AND \"Media\" = 'CD'",
+    "judgement":"<reason>\nStatement 1 calculates the sum of the \"Release Date\" column for rows where \"Media\" is 'cd', \"Country\" is 'uk', and \"Music Label\" is 'eg records'. Statement 2 selects the \"Release Date\" column for rows where \"Music Label\" is 'EG Records', \"Country\" is 'UK', and \"Media\" is 'CD'. Case sensitivity matters in SQL depending on the database configuration. Also, Statement 1 is an aggregate function and will return a single row with the sum of the release dates, or null if no rows match the condition. Statement 2 will return all \"Release Date\" values that match the conditions. These are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"aggregate and count the referred_by column",
+    "schema":"CREATE TABLE df (name VARCHAR, username VARCHAR, email VARCHAR, role VARCHAR, plan VARCHAR, storage_usage_gb VARCHAR, egress_usage_gb FLOAT, inserted_at VARCHAR, updated_at VARCHAR, referred_by VARCHAR);",
+    "sql":"\nSELECT referred_by, COUNT(*) AS count FROM df GROUP BY referred_by;\n",
+    "source":"oxenai",
+    "prediction":"SELECT referred_by, COUNT(*) FROM df GROUP BY referred_by;",
+    "judgement":"<reason>\n  The two SQL statements are equivalent. Both queries select the 'referred_by' column and the count of each group, grouped by the 'referred_by' column. The only difference is that the first statement explicitly names the count column as \"count\" using an alias (AS count), while the second statement does not explicitly name it, but the result will still contain a column with counts for each 'referred_by' group. Most SQL implementations will assign a default name to the aggregate function column if one isn't provided.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"how many iso\/iec were published before the year 2000 ?",
+    "schema":"CREATE TABLE df (id number, \"iso\/iec standard\" text, \"title\" text, \"status\" text, \"description\" text, \"wg\" number)",
+    "sql":"SELECT COUNT(\"iso\/iec standard\") FROM df WHERE \"status\" < 2000",
+    "source":"squall",
+    "prediction":"SELECT COUNT(*) FROM df WHERE \"iso\/iec standard\" < '2000-01-01'",
+    "judgement":"<reason>\n  The two statements are not equivalent. Statement 1 counts the number of non-null \"iso\/iec standard\" values where the \"status\" column is less than 2000. Statement 2 counts the total number of rows where \"iso\/iec standard\" is less than the string '2000-01-01'. The columns used in the WHERE clause are different, \"status\" vs \"iso\/iec standard\". Also, COUNT(\"iso\/iec standard\") will not count null values in the \"iso\/iec standard\" column, whereas COUNT(*) will count all rows that satisfy the WHERE condition regardless of whether the fields are null. Finally, the comparison operators use different types (number vs string), and the results will vary based on the data in the table.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the smallest Wins with a Position of 20th, and Poles smaller than 0?",
+    "schema":"CREATE TABLE df (wins INTEGER, position VARCHAR, poles VARCHAR)",
+    "sql":"SELECT MIN(wins) FROM df WHERE position = \"20th\" AND poles < 0",
+    "source":"sql_create_context",
+    "prediction":"SELECT MIN(wins) FROM df WHERE position = '20th' AND poles < 0",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because the only difference is the use of double quotes in the first statement and single quotes in the second statement to delimit the string \"20th\".  Most SQL databases treat single and double quotes interchangeably for string literals.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Tell me the stages for 1981",
+    "schema":"CREATE TABLE df (\"Year\" real, \"Date\" text, \"Event\" text, \"Days\" text, \"Stages\" text, \"Acts\" text)",
+    "sql":"SELECT \"Stages\" FROM df WHERE \"Year\" = '1981'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Stages\" FROM df WHERE \"Year\" = 1981",
+    "judgement":"<reason>\n  Statement 1 uses a string literal ('1981') for the Year comparison, while Statement 2 uses a numeric literal (1981). Although \"Year\" is defined as a real (numeric) type, most SQL implementations will perform implicit type conversion when comparing a string to a number. Therefore, the two statements will produce the same result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the away team when solon was the home team?",
+    "schema":"CREATE TABLE df (away_team VARCHAR, home_team VARCHAR)",
+    "sql":"SELECT away_team FROM df WHERE home_team = \"solon\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT away_team FROM df WHERE home_team = 'solon'",
+    "judgement":"<reason>\n  In SQL, single quotes and double quotes are often used interchangeably to denote string literals. Therefore, \"solon\" and 'solon' are treated the same. Thus, the two statements are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"How far to par did ed furgol from the United States get when he scored less than 72 and was placed at t3?",
+    "schema":"CREATE TABLE df (to_par VARCHAR, player VARCHAR, place VARCHAR, country VARCHAR, score VARCHAR)",
+    "sql":"SELECT to_par FROM df WHERE country = \"united states\" AND score < 72 AND place = \"t3\" AND player = \"ed furgol\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT to_par FROM df WHERE player = 'ed furgol' AND country = 'United States' AND score < '72' AND place = 't3'",
+    "judgement":"<reason>\nThe statements are not equivalent because the country in statement 1 is \"united states\" whereas in statement 2 it is \"United States\". Also, the score in statement 1 is the integer 72 whereas in statement 2 it is the string '72'. Since score is of type VARCHAR, the comparison `< 72` and `< '72'` may not be equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Where did the player who won in 1965 finish?",
+    "schema":"CREATE TABLE df (finish VARCHAR, year_s__won VARCHAR)",
+    "sql":"SELECT finish FROM df WHERE year_s__won = \"1965\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT finish FROM df WHERE year_s__won = '1965'",
+    "judgement":"<reason>\n  In most SQL implementations, single quotes and double quotes are often treated the same way for string literals. Therefore, the two SQL statements are equivalent, as they both select the 'finish' column from the 'df' table where the 'year_s__won' column is equal to the string \"1965\".\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What character does Italian voice actor Emanuela Damasio play?",
+    "schema":"CREATE TABLE df (\"Character\" text, \"French voice actor\" text, \"Italian voice actor\" text, \"German voice actor\" text, \"Spanish voice actor\" text)",
+    "sql":"SELECT \"Character\" FROM df WHERE \"Italian voice actor\" = 'emanuela damasio'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Character\" FROM df WHERE \"Italian voice actor\" = 'Emanuela Damasio'",
+    "judgement":"<reason>\n  SQL is generally case-insensitive for keywords and identifiers (like column names). However, string comparisons within the WHERE clause are often case-sensitive, depending on the database system and collation settings. Given that the only difference between the two statements is the capitalization of 'emanuela damasio' vs. 'Emanuela Damasio', and assuming a case-sensitive collation is in effect, the queries will return different results if the database contains entries with 'Emanuela Damasio' but not 'emanuela damasio', or vice versa. If the database is configured to ignore case, then the two queries would be equivalent. Without knowing the specific database collation, we should assume the comparisons are case-sensitive, and so they are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"aggregate and count the category column sort by count",
+    "schema":"CREATE TABLE df (category VARCHAR, text VARCHAR);",
+    "sql":"SELECT category, COUNT(*) AS count FROM df GROUP BY category ORDER BY count DESC",
+    "source":"oxenai",
+    "prediction":"SELECT category, COUNT(*) AS count FROM df GROUP BY category ORDER BY count DESC;",
+    "judgement":"<reason>\n  The two SQL statements are identical. The semicolon at the end of the second statement is optional and does not affect the query's result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What Class has the Identifier fo CBFX-FM-2?",
+    "schema":"CREATE TABLE df (\"City of license\" text, \"Identifier\" text, \"Frequency\" text, \"Power\" text, \"Class\" text, \"RECNet\" text)",
+    "sql":"SELECT \"Class\" FROM df WHERE \"Identifier\" = 'cbfx-fm-2'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Class\" FROM df WHERE \"Identifier\" = 'CBFX-FM-2'",
+    "judgement":"<reason>\n  SQL is generally case-insensitive for keywords and identifiers (like table and column names). However, the comparison of string values in the WHERE clause is often case-sensitive, depending on the database system's configuration. In this case, 'cbfx-fm-2' and 'CBFX-FM-2' are different strings. If the \"Identifier\" column contains 'cbfx-fm-2' but not 'CBFX-FM-2', the first query will return results while the second one will not, and vice-versa. If the \"Identifier\" column contains neither of these values, or both, then both queries will return the same (empty or non-empty) result. Without knowing the contents of the table, we cannot definitively say they are equivalent for all possible database states.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"search deleted questions in terms of their tagname\/title.",
+    "schema":"CREATE TABLE df ( Id number, PostTypeId number, AcceptedAnswerId number, ParentId number, CreationDate time, DeletionDate time, Score number, ViewCount number, Body text, OwnerUserId number, OwnerDisplayName text, LastEditorUserId number, LastEditorDisplayName text, LastEditDate time, LastActivityDate time, Title text, Tags text, AnswerCount number, CommentCount number, FavoriteCount number, ClosedDate time, CommunityOwnedDate time, ContentLicense text )",
+    "sql":"SELECT Id, url = 'site:\/\/q\/' + CAST(Id AS TEXT), CreationDate, DeletionDate, Score, Tags FROM df WHERE (PostTypeId = 1) AND (Tags LIKE '%<##Tagname##>%' OR Title LIKE '%<##Title##>%') AND (NOT DeletionDate IS NULL) ORDER BY DeletionDate DESC LIMIT 100",
+    "source":"sede",
+    "prediction":"SELECT Title, Tags FROM df WHERE PostTypeId = 1 AND DeletionDate IS NOT NULL",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent. Statement 1 selects Id, a computed column 'url', CreationDate, DeletionDate, Score, and Tags from the 'df' table, filters by PostTypeId = 1, Tags containing '%<##Tagname##>%' or Title containing '%<##Title##>%', and DeletionDate not being NULL, orders the result by DeletionDate in descending order, and limits the result to 100 rows. Statement 2 selects Title and Tags from the 'df' table, filters by PostTypeId = 1 and DeletionDate not being NULL, without any ordering or limit. The selected columns, filtering conditions, ordering, and limit clauses are all different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"On what date was a record set in the team pursuit (8 laps) event?",
+    "schema":"CREATE TABLE df (\"Event\" text, \"Time\" text, \"Name\" text, \"Nation\" text, \"Games\" text, \"Date\" text)",
+    "sql":"SELECT \"Date\" FROM df WHERE \"Event\" = 'team pursuit (8 laps)'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Date\" FROM df WHERE \"Event\" = 'team pursuit (8 laps)'",
+    "judgement":"<reason>\nBoth statements select the \"Date\" column from the table \"df\" where the \"Event\" column is equal to 'team pursuit (8 laps)'. They are identical.\n<\/reason>\n<answer>\ntrue\n<\/answer>"
+  },
+  {
+    "query":"which country has the most fide rated players after germany ?",
+    "schema":"CREATE TABLE df (id number, \"country\" text, \"zone\" text, \"national federation\" text, \"#gm\" number, \"#fide\" number, \"national championship\" text)",
+    "sql":"SELECT \"country\" FROM df WHERE \"country\" <> 'germany' ORDER BY \"#fide\" DESC LIMIT 1",
+    "source":"squall",
+    "prediction":"SELECT \"country\" FROM df WHERE \"country\" != 'Germany' ORDER BY \"#fide\" DESC LIMIT 1;",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent due to a case sensitivity issue in the WHERE clause. Statement 1 uses 'germany' (lowercase), while Statement 2 uses 'Germany' (uppercase). While some database systems might be case-insensitive by default, it's not guaranteed, and the case difference could lead to different results if there are country names with different capitalization.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"With 37 tries against, what is the try bonus?",
+    "schema":"CREATE TABLE df (try_bonus VARCHAR, tries_against VARCHAR)",
+    "sql":"SELECT try_bonus FROM df WHERE tries_against = \"37\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT try_bonus FROM df WHERE tries_against = '37'",
+    "judgement":"<reason>\n  In most SQL implementations, single quotes and double quotes are treated the same for string literals. Therefore, the two statements are equivalent because they both select the 'try_bonus' column from the 'df' table where the 'tries_against' column is equal to the string '37'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"All Info About Mobile Android Testing.",
+    "schema":"CREATE TABLE df ( Id number, PostTypeId number, AcceptedAnswerId number, ParentId number, CreationDate time, DeletionDate time, Score number, ViewCount number, Body text, OwnerUserId number, OwnerDisplayName text, LastEditorUserId number, LastEditorDisplayName text, LastEditDate time, LastActivityDate time, Title text, Tags text, AnswerCount number, CommentCount number, FavoriteCount number, ClosedDate time, CommunityOwnedDate time, ContentLicense text )",
+    "sql":"SELECT df.OwnerUserId, df.Title, df.Tags, df.ViewCount, df.Score, df.AnswerCount, df.CreationDate FROM df AS df WHERE (df.Tags LIKE '%android-testing%') OR (df.Tags LIKE '%robotium%') OR (df.Tags LIKE '%androidviewclient%') OR (df.Tags LIKE '%monkeyrunner%') OR (df.Tags LIKE '%android-espresso%') OR (df.Tags LIKE '%android-emulator%') OR (df.Tags LIKE '%android%' AND df.Tags LIKE '%uiautomator%') OR (df.Tags LIKE '%android%' AND df.Tags LIKE '%appium%') OR (df.Tags LIKE '%android%' AND df.Tags LIKE '%calabash%') OR (df.Tags LIKE '%android%' AND df.Tags LIKE '%test%') ORDER BY df.Score DESC",
+    "source":"sede",
+    "prediction":"SELECT * FROM df WHERE Title LIKE '%Mobile Android Testing%' OR Body LIKE '%Mobile Android Testing%' OR Tags LIKE '%Mobile Android Testing%'",
+    "judgement":"<reason>\n  The two SQL statements are not equivalent. Statement 1 selects specific columns (OwnerUserId, Title, Tags, ViewCount, Score, AnswerCount, CreationDate) from the 'df' table where the 'Tags' column contains certain Android testing-related keywords or combinations. It then orders the results by 'Score' in descending order. Statement 2 selects all columns from the 'df' table where the 'Title', 'Body', or 'Tags' column contains the phrase \"Mobile Android Testing\". They select different columns and have different where clause conditions.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Show the names of the three most recent festivals.",
+    "schema":"CREATE TABLE df (Festival_Name VARCHAR, YEAR VARCHAR)",
+    "sql":"SELECT Festival_Name FROM df ORDER BY YEAR DESC LIMIT 3",
+    "source":"sql_create_context",
+    "prediction":"SELECT Festival_Name FROM df ORDER BY YEAR DESC LIMIT 3",
+    "judgement":"<reason>\n  The two SQL statements are identical. Both select the Festival_Name from the table df, order the results by YEAR in descending order, and limit the result set to the top 3 rows.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what is the distribution in the category column",
+    "schema":"CREATE TABLE df (text VARCHAR, prompt VARCHAR, category VARCHAR, prediction VARCHAR, correct BOOLEAN, model VARCHAR, time REAL);",
+    "sql":"SELECT category, COUNT(*) AS count FROM df GROUP BY category;",
+    "source":"oxenai",
+    "prediction":"SELECT category, COUNT(*) FROM df GROUP BY category;",
+    "judgement":"<reason>\n  The statements are equivalent because both select the category and the count of each category from the df table, grouping by category. The only difference is that statement 1 assigns an alias \"count\" to the count aggregation, while statement 2 does not assign an alias. However, this does not affect the result of the query, just the name of the column in the result set.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"how many patients whose admission location is transfer from hosp\/extram and days of hospital stay is greater than 34?",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, name text, marital_status text, age text, dob text, gender text, language text, religion text, admission_type text, days_stay text, insurance text, ethnicity text, expire_flag text, admission_location text, discharge_location text, diagnosis text, dod text, dob_year text, dod_year text, admittime text, dischtime text, admityear text)",
+    "sql":"SELECT COUNT(DISTINCT df.subject_id) FROM df WHERE df.admission_location = \"TRANSFER FROM HOSP\/EXTRAM\" AND df.days_stay > \"34\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT COUNT(*) FROM df WHERE admission_location = 'Transfer from Hospital\/Extram' AND CAST(days_stay AS INTEGER) > 34;",
+    "judgement":"<reason>\nStatement 1 explicitly specifies the table name (df) for the subject_id column, but not for the other columns (admission_location and days_stay), while statement 2 does not specify a table name for any column. More importantly, statement 1 compares `df.days_stay` which is text to \"34\" as text. Statement 2 casts `days_stay` to an INTEGER and compares it to the number 34. The values being compared are therefore different. Also, the string literals are different, Statement 1 is \"TRANSFER FROM HOSP\/EXTRAM\", and statement 2 is 'Transfer from Hospital\/Extram'. These strings are not the same.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the location of the game with a 6-11-8 record?",
+    "schema":"CREATE TABLE df (\"Game\" real, \"Date\" text, \"Opponent\" text, \"Score\" text, \"Location\" text, \"Attendance\" real, \"Record\" text, \"Points\" real)",
+    "sql":"SELECT \"Location\" FROM df WHERE \"Record\" = '6-11-8'",
+    "source":"wikisql",
+    "prediction":"SELECT Location FROM df WHERE Record = '6-11-8'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent. The only difference is the use of quotation marks around the column names. While some SQL dialects require quotation marks, many (including SQLite, which is commonly used for these types of exercises) do not when the column name is a valid identifier. The case of the column names are also the same, so there is no difference in that regard.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"For the game played against the L.A. Lakers, where was the match played and what was the attendance level?",
+    "schema":"CREATE TABLE df (\"Game\" real, \"Date\" text, \"Team\" text, \"Score\" text, \"High points\" text, \"High rebounds\" text, \"Location Attendance\" text, \"Record\" text)",
+    "sql":"SELECT \"Location Attendance\" FROM df WHERE \"Team\" = 'l.a. lakers'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Location Attendance\" FROM df WHERE \"Team\" = 'L.A. Lakers'",
+    "judgement":"<reason>\n  SQL is typically case-insensitive for column names and table names. However, string comparisons within the WHERE clause (e.g., \"Team\" = 'l.a. lakers') are often case-sensitive, depending on the database system's collation settings. The first statement uses 'l.a. lakers' (lowercase), and the second uses 'L.A. Lakers' (uppercase). If the \"Team\" column contains values such as 'L.A. Lakers', the first query might not return any results, while the second one will. If the database is set up to be case insensitive, then the queries are equivalent. Given we do not know the database collation and the potential for different data values, we assume they are not the same.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"tell me the drug code of phenylephrine medication.",
+    "schema":"CREATE TABLE df (subject_id text, hadm_id text, icustay_id text, drug_type text, drug text, formulary_drug_cd text, route text, drug_dose text)",
+    "sql":"SELECT df.formulary_drug_cd FROM df WHERE df.drug = \"Phenylephrine\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT formulary_drug_cd FROM df WHERE drug = 'phenylephrine'",
+    "judgement":"<reason>\n  The two statements are not equivalent because the drug value in the WHERE clause has different capitalization.  SQL string comparisons are often case-sensitive, so \"Phenylephrine\" is not necessarily equal to \"phenylephrine\". The exact behavior depends on the database system's configuration, especially the collation settings.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Hotels where the location_description includes 'japan' case insensitive",
+    "schema":"CREATE TABLE df (hotel_id INTEGER, hotel_name VARCHAR, location_description VARCHAR, editorial_review VARCHAR);",
+    "sql":"\nSELECT * FROM df WHERE location_description ILIKE '%japan%'\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE LOWER(location_description) LIKE '%japan%';",
+    "judgement":"<reason>\n  The ILIKE operator in SQL is case-insensitive, meaning it will match 'japan', 'Japan', 'JAPAN', etc. The second statement explicitly converts the `location_description` to lowercase using the `LOWER()` function before performing the `LIKE` comparison with '%japan%'. This achieves the same case-insensitive matching as `ILIKE`. Thus, the statements are equivalent as they both perform a case insensitive search for the string 'japan' within the location_description column.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the total number of each fate? Give me the result in a bar graph, and could you order Y-axis from low to high order?",
+    "schema":"CREATE TABLE df (Mission_ID int, Ship_ID int, Code text, Launched_Year int, Location text, Speed_knots int, Fate text)",
+    "sql":"SELECT Fate, COUNT(Fate) FROM df GROUP BY Fate ORDER BY COUNT(Fate)",
+    "source":"nvbench",
+    "prediction":"SELECT Fate, COUNT(*) AS Total FROM df GROUP BY Fate ORDER BY Total ASC;",
+    "judgement":"<reason>\nBoth queries select the 'Fate' column and the count of each distinct 'Fate' value from the 'df' table. They both group the results by 'Fate' and order the results by the count.\n\nStatement 1 orders by COUNT(Fate) implicitly in ascending order.\nStatement 2 explicitly orders by the alias 'Total' (which represents the count) in ascending order using 'ASC'.\n\nSince both statements perform the same operations and order the results in ascending order based on the count of Fate, they are equivalent.\n<\/reason>\n<answer>\ntrue\n<\/answer>"
+  },
+  {
+    "query":null,
+    "schema":"CREATE TABLE df ( introduced INTEGER )",
+    "sql":"SELECT MIN(introduced) FROM df",
+    "source":"sql_create_context",
+    "prediction":"SELECT * FROM df WHERE introduced >= 1990 AND introduced <= 2000",
+    "judgement":"<reason>\nStatement 1 returns the minimum value of the \"introduced\" column from the table \"df\". Statement 2 returns all rows from the table \"df\" where the \"introduced\" column is between 1990 and 2000 (inclusive). They perform completely different operations and will return different results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Return a bar chart about the distribution of All_Games and School_ID , list by the School_ID in descending.",
+    "schema":"CREATE TABLE df (Team_ID int, School_ID int, Team_Name text, ACC_Regular_Season text, ACC_Percent text, ACC_Home text, ACC_Road text, All_Games text, All_Games_Percent int, All_Home text, All_Road text, All_Neutral text)",
+    "sql":"SELECT All_Games, School_ID FROM df ORDER BY School_ID DESC",
+    "source":"nvbench",
+    "prediction":"SELECT School_ID, All_Games FROM df ORDER BY School_ID DESC;",
+    "judgement":"<reason>\n  The two statements are not equivalent because while they both order the result set by School_ID in descending order, the order of the columns selected is different. Statement 1 selects All_Games first and then School_ID, while statement 2 selects School_ID first and then All_Games.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What year was transamerica field built in?",
+    "schema":"CREATE TABLE df (\"Venue\" text, \"Location\" text, \"Capacity\" text, \"Owner\" text, \"Environment\" text, \"Year Built\" text)",
+    "sql":"SELECT \"Year Built\" FROM df WHERE \"Venue\" = 'transamerica field'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Year Built\" FROM df WHERE \"Venue\" = 'Transamerica Field'",
+    "judgement":"<reason>\n  The SQL statements differ in the casing of the venue name in the WHERE clause. SQL string comparisons are typically case-sensitive unless the database is configured to be case-insensitive. Therefore, if the venue name in the table is 'transamerica field' (lowercase) only the first statement will return a result. If the venue name in the table is 'Transamerica Field' (title case), only the second statement will return a result. If the database is configured to be case-insensitive, both statements will return the same result if either of the venue names exists in the table. Since we do not know the case of the entry in the table, nor whether the database is configured to be case-sensitive, we cannot say whether the statements are equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"daniel martin and joost posthuma both withdrew from the race because of what reason ?",
+    "schema":"CREATE TABLE df (id number, \"type\" text, \"stage\" number, \"cyclist\" text, \"team\" text, \"reason\" text)",
+    "sql":"SELECT \"reason\" FROM df WHERE \"cyclist\" = 'daniel martin'",
+    "source":"squall",
+    "prediction":"SELECT reason FROM df WHERE cyclist IN ('daniel martin', 'joost posthuma') AND type = 'withdrawal';",
+    "judgement":"<reason>\n  Statement 1 selects the \"reason\" column for rows where the \"cyclist\" is 'daniel martin'. Statement 2 selects the \"reason\" column where the \"cyclist\" is either 'daniel martin' or 'joost posthuma' AND the \"type\" is 'withdrawal'. These statements are not equivalent because statement 2 has an additional AND condition and a different cyclist.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the position of player Tobias Lindberg?",
+    "schema":"CREATE TABLE df (position VARCHAR, player VARCHAR)",
+    "sql":"SELECT position FROM df WHERE player = \"Tobias Lindberg\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT position FROM df WHERE player = 'Tobias Lindberg';",
+    "judgement":"<reason>\n  The two statements are equivalent because in most SQL implementations, single quotes and double quotes are treated the same way when specifying string literals.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Name the vessel type for dof subsea",
+    "schema":"CREATE TABLE df (\"No. in series\" real, \"No. in season\" real, \"Title\" text, \"Vessel Type\" text, \"Vessel Operator\" text, \"Narrated by\" text, \"Original air date\" real)",
+    "sql":"SELECT \"Vessel Type\" FROM df WHERE \"Vessel Operator\" = 'DOF Subsea'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Vessel Type\" FROM df WHERE \"Vessel Operator\" = 'dof subsea'",
+    "judgement":"<reason>\nThe SQL standard specifies that string comparisons are case-insensitive by default unless the collation is explicitly defined to be case-sensitive. However, different database systems might have different default collations. Without knowing the specific database system and the collation of the \"Vessel Operator\" column, we cannot definitively say whether the statements are equivalent. If the collation is case-sensitive, the statements are not equivalent because 'DOF Subsea' and 'dof subsea' are different strings. If the collation is case-insensitive, the statements are equivalent. Assuming a case-sensitive collation for the purpose of this problem.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the 2nd (m) value for Gregor Schlierenzauer?",
+    "schema":"CREATE TABLE df (\"Rank\" real, \"Name\" text, \"Nationality\" text, \"1st (m)\" real, \"2nd (m)\" real, \"Points\" real, \"Overall WC points (Rank)\" text)",
+    "sql":"SELECT MIN(\"2nd (m)\") FROM df WHERE \"Name\" = 'gregor schlierenzauer'",
+    "source":"wikisql",
+    "prediction":"SELECT \"2nd (m)\" FROM df WHERE \"Name\" = 'Gregor Schlierenzauer'",
+    "judgement":"<reason>\n  Statement 1 returns the minimum value of the \"2nd (m)\" column for the row(s) where the \"Name\" is 'gregor schlierenzauer'. Statement 2 returns the \"2nd (m)\" value for the row(s) where the \"Name\" is 'Gregor Schlierenzauer'. Note that the names are case-sensitive. If there is only one row matching either condition, and the case matches, then statement 1 would return the same value, but wrapped in an aggregation function. If the case does not match, then the queries return different results. If there are multiple rows matching the condition in statement 1, then statement 1 would return the minimum value. Statement 2 would return all matching rows with the name 'Gregor Schlierenzauer'.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is the number of races won in in 2012 by etienne bax ?",
+    "schema":"CREATE TABLE df (id number, \"season\" number, \"driver\" text, \"equipment\" text, \"position\" number, \"points\" number, \"races\" number, \"wins\" number, \"second\" number, \"third\" number)",
+    "sql":"SELECT \"wins\" FROM df WHERE \"season\" = 2012 AND \"driver\" = 'etienne bax'",
+    "source":"squall",
+    "prediction":"SELECT SUM(wins) FROM df WHERE season = 2012 AND driver = 'etienne bax';",
+    "judgement":"<reason>\n  Statement 1 selects the 'wins' column directly. Statement 2 calculates the sum of the 'wins' column. If there is only one row that matches the where criteria, and wins is not null, then the result of statement 1 will be equivalent to the result of statement 2. However, if there are multiple rows matching the where criteria, then the result will be different. Also, if the wins column is null, then statement 1 will return null, and statement 2 will return 0.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"On what date did they have a record of 12-17?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Opponent\" text, \"Score\" text, \"Loss\" text, \"Attendance\" real, \"Record\" text)",
+    "sql":"SELECT \"Date\" FROM df WHERE \"Record\" = '12-17'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Date\" FROM df WHERE \"Record\" = '12-17'",
+    "judgement":"<reason>\nBoth SQL statements perform the same operation: selecting the \"Date\" column from the table \"df\" where the \"Record\" column is equal to '12-17'. Therefore, they are equivalent.\n<\/reason>\n<answer>\ntrue\n<\/answer>"
+  },
+  {
+    "query":"What place had 14:11.15 as the performance?",
+    "schema":"CREATE TABLE df (place VARCHAR, performance VARCHAR)",
+    "sql":"SELECT place FROM df WHERE performance = \"14:11.15\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT place FROM df WHERE performance = '14:11.15'",
+    "judgement":"<reason>\n  In most SQL implementations, single quotes and double quotes are treated the same way for string literals. Therefore, the two statements are equivalent because they both select the 'place' from the table 'df' where the 'performance' is equal to the string '14:11.15'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which artist was 2003?",
+    "schema":"CREATE TABLE df (\"Year\" real, \"Album\" text, \"Artist\" text, \"Song\" text, \"Note\" text)",
+    "sql":"SELECT \"Artist\" FROM df WHERE \"Year\" = '2003'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Artist\" FROM df WHERE \"Year\" = 2003;",
+    "judgement":"<reason>\n  The two statements are equivalent because SQL implicitly converts the string '2003' to the numerical value 2003 when comparing it to the \"Year\" column, which is of type real.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"how many employees does vitol have ?",
+    "schema":"CREATE TABLE df (id number, \"ranking\" number, \"company\" text, \"industry\" text, \"revenue (usd billions)\" text, \"fy\" text, \"capitalization (usd billions)\" text, \"employees\" number, \"listing\" text, \"headquarters\" text, \"ceo\" text)",
+    "sql":"SELECT \"employees\" FROM df WHERE \"company\" = 'vitol'",
+    "source":"squall",
+    "prediction":"SELECT employees FROM df WHERE company = 'Vitol'",
+    "judgement":"<reason>\n  The statements are not equivalent because SQL is case-sensitive with string comparisons. Statement 1 uses 'vitol' (lowercase 'v') while statement 2 uses 'Vitol' (uppercase 'V'). Also, Statement 1 is using quotes around the column names, whereas Statement 2 is not. Depending on the SQL implementation, these may or may not be equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What was 1961's qual?",
+    "schema":"CREATE TABLE df (\"Year\" text, \"Start\" text, \"Qual\" text, \"Rank\" text, \"Finish\" text, \"Laps\" real)",
+    "sql":"SELECT \"Qual\" FROM df WHERE \"Year\" = '1961'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Qual\" FROM df WHERE \"Year\" = '1961'",
+    "judgement":"<reason>\n  Both statements select the \"Qual\" column from the \"df\" table where the \"Year\" column is equal to '1961'. They are identical.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the constructor of the driver Heinz-Harald Frentzen?",
+    "schema":"CREATE TABLE df (constructor VARCHAR, driver VARCHAR)",
+    "sql":"SELECT constructor FROM df WHERE driver = \"heinz-harald frentzen\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT constructor FROM df WHERE driver = 'Heinz-Harald Frentzen';",
+    "judgement":"<reason>\n  The statements are not equivalent because SQL string comparisons are case-sensitive by default.  The driver names \"heinz-harald frentzen\" and \"Heinz-Harald Frentzen\" differ in capitalization, so the WHERE clauses will select different (or possibly no) rows.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Show me all the rows where sentiment != prediction and prediction != null",
+    "schema":"CREATE TABLE df (text VARCHAR, sentiment VARCHAR, prediction VARCHAR);",
+    "sql":"\nSELECT * FROM df WHERE sentiment != prediction AND prediction IS NOT NULL\n",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE sentiment != prediction AND prediction IS NOT NULL;",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both select all columns from the table `df` where the `sentiment` column is not equal to the `prediction` column, and the `prediction` column is not null.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what is the time\/retired when the laps is 52?",
+    "schema":"CREATE TABLE df (time_retired VARCHAR, laps VARCHAR)",
+    "sql":"SELECT time_retired FROM df WHERE laps = 52",
+    "source":"sql_create_context",
+    "prediction":"SELECT time_retired FROM df WHERE laps = '52'",
+    "judgement":"<reason>\n  The `laps` column is defined as VARCHAR. Therefore, comparing it to the integer 52 in Statement 1 implicitly casts 52 to a VARCHAR. Statement 2 explicitly compares `laps` to the VARCHAR '52'. Since the comparison is between two VARCHAR values in both cases, they are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which engine has more than 1 point after 1981?",
+    "schema":"CREATE TABLE df (engine VARCHAR, points VARCHAR, year VARCHAR)",
+    "sql":"SELECT engine FROM df WHERE points > 1 AND year > 1981",
+    "source":"sql_create_context",
+    "prediction":"SELECT engine FROM df WHERE CAST(points AS INTEGER) > 1 AND CAST(year AS INTEGER) > 1981;",
+    "judgement":"<reason>\n  Statement 1 implicitly converts the `points` and `year` columns to a numeric type for comparison, while Statement 2 explicitly casts them to INTEGER. Since the columns are defined as VARCHAR, the implicit conversion in Statement 1 and the explicit cast to INTEGER in Statement 2 will achieve the same result. They both compare the numerical values of the VARCHAR columns `points` and `year` with the integer values 1 and 1981 respectively.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who was the runner-up in season five?",
+    "schema":"CREATE TABLE df (runner_up VARCHAR, season VARCHAR)",
+    "sql":"SELECT runner_up FROM df WHERE season = \"Five\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT runner_up FROM df WHERE season = 'five'",
+    "judgement":"<reason>\n  SQL string comparisons are typically case-sensitive. Therefore, \"Five\" and \"five\" are treated as different values. The first statement will only return rows where the 'season' column exactly matches \"Five\", while the second statement will only return rows where the 'season' column exactly matches \"five\". If the database stores season as \"Five\", only the first statement will return results. If the database stores season as \"five\", only the second statement will return results. If the database stores season as \"FIVE\", neither statement will return results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which team classification has malaysian team classification of mncf continental team?",
+    "schema":"CREATE TABLE df (\"Stage\" real, \"Stage winner\" text, \"General classification\" text, \"Points classification\" text, \"Mountains classification\" text, \"Malaysian rider classification\" text, \"Team classification\" text, \"Malaysian team classification\" text)",
+    "sql":"SELECT \"Team classification\" FROM df WHERE \"Malaysian team classification\" = 'MNCF Continental Team'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Team classification\" FROM df WHERE \"Malaysian team classification\" = 'mncf continental team'",
+    "judgement":"<reason>\n  The statements are not necessarily equivalent. The equality comparison in the WHERE clause is case-sensitive in some SQL implementations. Therefore, 'MNCF Continental Team' and 'mncf continental team' might be considered different values, leading to different results if the case does not match.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the grid total for david coulthard?",
+    "schema":"CREATE TABLE df (grid INTEGER, driver VARCHAR)",
+    "sql":"SELECT SUM(grid) FROM df WHERE driver = \"david coulthard\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT SUM(grid) FROM df WHERE driver = 'david coulthard'",
+    "judgement":"<reason>\n  The two statements are equivalent because SQL treats single quotes (') and double quotes (\") as equivalent string delimiters when comparing against string values, in this case the driver name.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who is the rider with 22 laps and a +19.435 time\/retired?",
+    "schema":"CREATE TABLE df (\"Rider\" text, \"Manufacturer\" text, \"Laps\" text, \"Time\/Retired\" text, \"Grid\" text)",
+    "sql":"SELECT \"Rider\" FROM df WHERE \"Laps\" = '22' AND \"Time\/Retired\" = '+19.435'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Rider\" FROM df WHERE \"Laps\" = '22' AND \"Time\/Retired\" = '+19.435'",
+    "judgement":"<reason>\n  Both SQL statements are identical. They both select the \"Rider\" column from the table \"df\" where the \"Laps\" column equals '22' and the \"Time\/Retired\" column equals '+19.435'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What was the record on 12 march 2008?",
+    "schema":"CREATE TABLE df (record VARCHAR, date VARCHAR)",
+    "sql":"SELECT record FROM df WHERE date = \"12 march 2008\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT record FROM df WHERE date = '12 march 2008'",
+    "judgement":"<reason>\n  In SQL, single quotes (') and double quotes (\") are often interchangeable for string literals. Both statements select the 'record' column from the 'df' table where the 'date' column is equal to the string '12 march 2008'. Therefore, they are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what's the naturalisation by marriage with regbeingtration of a minor child being 114",
+    "schema":"CREATE TABLE df (naturalisation_by_marriage VARCHAR, registration_of_a_minor_child VARCHAR)",
+    "sql":"SELECT naturalisation_by_marriage FROM df WHERE registration_of_a_minor_child = 114",
+    "source":"sql_create_context",
+    "prediction":"SELECT naturalisation_by_marriage FROM df WHERE registration_of_a_minor_child = '114'",
+    "judgement":"<reason>\n  The two statements are equivalent because SQL implicitly converts the string '114' to the integer 114 when comparing it to the `registration_of_a_minor_child` column. The column `registration_of_a_minor_child` is a VARCHAR, but SQL will still attempt to convert the string '114' to a number for comparison.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the least number of miss united continents?",
+    "schema":"CREATE TABLE df (\"Rank\" real, \"Country\" text, \"Miss United Continent\" real, \"Virreina\" real, \"1st RU\" real, \"2nd RU\" real, \"3rd RU\" real, \"4th RU\" real, \"Semifinalists\" real, \"Total\" real)",
+    "sql":"SELECT MIN(\"Miss United Continent\") FROM df",
+    "source":"wikisql",
+    "prediction":"SELECT MIN(\"Miss United Continent\") FROM df",
+    "judgement":"<reason>\n  The two SQL statements are identical. Both select the minimum value of the \"Miss United Continent\" column from the table \"df\".\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which Name has a Number of electorates (2009) greater than 188,799?",
+    "schema":"CREATE TABLE df (\"Constituency number\" text, \"Name\" text, \"Reserved for ( SC \/ ST \/None)\" text, \"District\" text, \"Number of electorates (2009)\" real)",
+    "sql":"SELECT \"Name\" FROM df WHERE \"Number of electorates (2009)\" > '188,799'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Name\" FROM df WHERE \"Number of electorates (2009)\" > 188799;",
+    "judgement":"<reason>\n  Statement 1 compares the \"Number of electorates (2009)\" column, which is of type REAL, with the string value '188,799'. SQL might perform an implicit conversion of the string to a number, but the presence of the comma could cause issues or be interpreted differently depending on the database system's locale settings. Statement 2 compares the same column with the numeric value 188799. While both statements are trying to achieve the same goal, statement 2 is more explicit and less prone to errors due to locale or implicit conversion issues. Therefore, they are not guaranteed to be equivalent across all database systems.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the average position of pilot petr krejcirik, who has less than 11 points?",
+    "schema":"CREATE TABLE df (\"Position\" real, \"Pilot\" text, \"Country\" text, \"Glider\" text, \"Points\" real)",
+    "sql":"SELECT AVG(\"Position\") FROM df WHERE \"Points\" < '11' AND \"Pilot\" = 'petr krejcirik'",
+    "source":"wikisql",
+    "prediction":"SELECT AVG(\"Position\") FROM df WHERE \"Pilot\" = 'petr krejcirik' AND \"Points\" < 11;",
+    "judgement":"<reason>\n  The two statements are equivalent because the order of the WHERE clause conditions does not affect the outcome of the query. Also, comparing a real to a string of digits implicitly casts the string to a real, so '11' and 11 are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Name the stock for colt model mt6601",
+    "schema":"CREATE TABLE df (stock VARCHAR, colt_model_no VARCHAR)",
+    "sql":"SELECT stock FROM df WHERE colt_model_no = \"MT6601\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT stock FROM df WHERE colt_model_no = 'mt6601'",
+    "judgement":"<reason>\n  The statements are not equivalent because the comparison in the WHERE clause is case-sensitive. \"MT6601\" and \"mt6601\" are different strings. If the colt_model_no column contains \"MT6601\", the first query will return the corresponding stock values, while the second query will return stock values only where colt_model_no is 'mt6601'. If the database is case-insensitive, then the queries would be equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is Opponent, when Attendance is 58,836?",
+    "schema":"CREATE TABLE df (\"Week\" real, \"Date\" text, \"Opponent\" text, \"Result\" text, \"Attendance\" text)",
+    "sql":"SELECT \"Opponent\" FROM df WHERE \"Attendance\" = '58,836'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Opponent\" FROM df WHERE \"Attendance\" = '58,836'",
+    "judgement":"<reason>\n  Both SQL statements select the \"Opponent\" column from the \"df\" table where the \"Attendance\" column is equal to the string '58,836'. They are identical.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is the name of episode # 10a?",
+    "schema":"CREATE TABLE df (title VARCHAR, no_in_series VARCHAR)",
+    "sql":"SELECT title FROM df WHERE no_in_series = \"10a\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT title FROM df WHERE no_in_series = '10a'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because both single quotes (') and double quotes (\") are typically used to denote string literals in SQL. Therefore, '10a' and \"10a\" are treated the same way.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what is 2005 when 2003 is A, 2007 is 2r and 2012 is 3r?",
+    "schema":"CREATE TABLE df ( Id VARCHAR )",
+    "sql":"SELECT 2005 FROM df WHERE 2003 = \"a\" AND 2007 = \"2r\" AND 2012 = \"3r\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT Id FROM df WHERE Id = '2005' AND '2003' = 'A' AND '2007' = '2r' AND '2012' = '3r'",
+    "judgement":"<reason>\n  Statement 1 selects the constant value 2005 if the conditions in the WHERE clause are met. Statement 2 selects the value of the 'Id' column if the conditions in the WHERE clause are met. The conditions in the WHERE clauses are also different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"When did the Tournament of the Tour Championship take place?",
+    "schema":"CREATE TABLE df (date VARCHAR, tournament VARCHAR)",
+    "sql":"SELECT date FROM df WHERE tournament = \"the tour championship\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT date FROM df WHERE tournament = 'Tour Championship'",
+    "judgement":"<reason>\n  The two statements are not equivalent because the string literals used to compare the 'tournament' column differ in case and content. Statement 1 uses \"the tour championship\" while statement 2 uses 'Tour Championship'. Without knowing the exact values in the 'tournament' column, it is impossible to determine if these two strings would match any rows.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is Population in Millions, when GDP 2012 Millions of Euro is 600,638?",
+    "schema":"CREATE TABLE df (population_in_millions VARCHAR, gdp_2012_millions_of_euro VARCHAR)",
+    "sql":"SELECT population_in_millions FROM df WHERE gdp_2012_millions_of_euro = \"600,638\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT population_in_millions FROM df WHERE gdp_2012_millions_of_euro = '600,638'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because in most SQL implementations, single quotes and double quotes are interchangeable for string literals. They both select the same column ('population_in_millions') from the same table ('df') and filter based on the same condition, where 'gdp_2012_millions_of_euro' equals the string '600,638'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Who is the h.s. principal during 1973-1974?",
+    "schema":"CREATE TABLE df (hs_principal VARCHAR, year VARCHAR)",
+    "sql":"SELECT hs_principal FROM df WHERE year = \"1973-1974\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT hs_principal FROM df WHERE year = '1973-1974'",
+    "judgement":"<reason>\n  In most SQL implementations, single quotes and double quotes are treated the same for string literals. Therefore, the two statements are equivalent because they both select the `hs_principal` from the `df` table where the `year` is equal to the string \"1973-1974\".\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which Date has a Score of 2 3, a Time of 20:30, and a Set 3 of 16 25?",
+    "schema":"CREATE TABLE df (date VARCHAR, set_3 VARCHAR, score VARCHAR, time VARCHAR)",
+    "sql":"SELECT date FROM df WHERE score = \"2–3\" AND time = \"20:30\" AND set_3 = \"16–25\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT date FROM df WHERE score = '2 3' AND time = '20:30' AND set_3 = '16 25'",
+    "judgement":"<reason>\n  The statements are not equivalent because the string literals in the WHERE clause of Statement 1 use hyphens ('-') while the string literals in Statement 2 use spaces (' '). Since the data in the columns 'score' and 'set_3' are compared against these string literals, the statements will return different results if the actual data contains hyphens instead of spaces, or vice versa.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"How many points did the Club score that has a try bonus of 7 and 52 tries for ?",
+    "schema":"CREATE TABLE df (points_for VARCHAR, tries_for VARCHAR, try_bonus VARCHAR)",
+    "sql":"SELECT points_for FROM df WHERE tries_for = \"52\" AND try_bonus = \"7\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT SUM(CAST(points_for AS INTEGER)) FROM df WHERE try_bonus = '7' AND tries_for = '52'",
+    "judgement":"<reason>\n  Statement 1 selects the `points_for` values directly as strings. Statement 2 attempts to sum the integer representation of the `points_for` column values, which means it also implicitly groups the result. Also, Statement 1 returns a column of strings, whereas Statement 2 returns a single numeric value representing the sum.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What was the Outcome of the match played on Hard (i) Surface?",
+    "schema":"CREATE TABLE df (\"Outcome\" text, \"Date\" text, \"Surface\" text, \"Partner\" text, \"Opponents\" text, \"Score\" text)",
+    "sql":"SELECT \"Outcome\" FROM df WHERE \"Surface\" = 'hard (i)'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Outcome\" FROM df WHERE \"Surface\" = 'Hard (i)'",
+    "judgement":"<reason>\n  The statements are not equivalent because the surface strings differ in capitalization. SQL string comparisons are typically case-sensitive, unless the database is configured to be case-insensitive. Therefore, 'hard (i)' is not the same as 'Hard (i)'.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"only class of roses",
+    "schema":"CREATE TABLE df (image VARCHAR, class VARCHAR, attribution VARCHAR, url VARCHAR);",
+    "sql":"SELECT class FROM df WHERE class = 'roses';",
+    "source":"oxenai",
+    "prediction":"SELECT class FROM df WHERE class = 'roses';",
+    "judgement":"<reason>\n  Both statements select the 'class' column from the 'df' table where the 'class' column has the value 'roses'.  They are identical.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which railway has a class of 250 and year 1936?",
+    "schema":"CREATE TABLE df (\"Gauge\" text, \"Railway\" text, \"Class\" text, \"Works no.\" text, \"Year\" text, \"Builder\" text)",
+    "sql":"SELECT \"Railway\" FROM df WHERE \"Class\" = '250' AND \"Year\" = '1936'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Railway\" FROM df WHERE \"Class\" = '250' AND \"Year\" = '1936'",
+    "judgement":"<reason>\n  Both SQL statements are identical. They both select the \"Railway\" column from the table \"df\" where the \"Class\" is '250' and the \"Year\" is '1936'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What were the high points on April 8?",
+    "schema":"CREATE TABLE df (\"Game\" real, \"Date\" text, \"Team\" text, \"Score\" text, \"High points\" text, \"High rebounds\" text, \"High assists\" text, \"Location Attendance\" text, \"Record\" text)",
+    "sql":"SELECT \"High points\" FROM df WHERE \"Date\" = 'April 8'",
+    "source":"wikisql",
+    "prediction":"SELECT \"High points\" FROM df WHERE \"Date\" = 'April 8'",
+    "judgement":"<reason>\n  Both SQL queries select the \"High points\" column from the table 'df' where the \"Date\" column is equal to 'April 8'.  They are identical.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"On what Date is there a Home team score of 8.15 (63)?",
+    "schema":"CREATE TABLE df (\"Home team\" text, \"Home team score\" text, \"Away team\" text, \"Away team score\" text, \"Venue\" text, \"Crowd\" real, \"Date\" text)",
+    "sql":"SELECT \"Date\" FROM df WHERE \"Home team score\" = '8.15 (63)'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Date\" FROM df WHERE \"Home team score\" = '8.15 (63)'",
+    "judgement":"<reason>\n  Both SQL queries select the \"Date\" column from the table \"df\" where the \"Home team score\" is equal to '8.15 (63)'. Therefore, they are equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"what is the most recent year gardnar mulloy played as a partner and score was 12 10, 8 10, 12 10, 6 2?",
+    "schema":"CREATE TABLE df (year INTEGER, partner VARCHAR, score VARCHAR)",
+    "sql":"SELECT MAX(year) FROM df WHERE partner = \"gardnar mulloy\" AND score = \"12–10, 8–10, 12–10, 6–2\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT MAX(year) FROM df WHERE partner = 'gardnar mulloy' AND score IN ('12 10', '8 10', '12 10', '6 2')",
+    "judgement":"<reason>\n  Statement 1 searches for an exact match of the string \"12–10, 8–10, 12–10, 6–2\" in the score column. Statement 2 searches for rows where the partner is 'gardnar mulloy' and the score is one of '12 10', '8 10', '12 10', or '6 2'. These are different conditions. The first statement is looking for a specific string with hyphens, while the second is looking for a string of numbers separated by spaces, and only one of those values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Name the date for value 55c",
+    "schema":"CREATE TABLE df (date VARCHAR, value VARCHAR)",
+    "sql":"SELECT date FROM df WHERE value = \"55c\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT date FROM df WHERE value = '55c'",
+    "judgement":"<reason>\n  The two statements are equivalent because single quotes and double quotes are typically interchangeable for string literals in SQL. They both select the 'date' column from the 'df' table where the 'value' column is equal to the string '55c'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"How many types of valves were used on this engine that was built on 1902-05?",
+    "schema":"CREATE TABLE df (valves VARCHAR, years_built VARCHAR)",
+    "sql":"SELECT COUNT(valves) FROM df WHERE years_built = \"1902-05\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT COUNT(DISTINCT valves) FROM df WHERE years_built = '1902-05'",
+    "judgement":"<reason>\n  The first statement counts all valves where years_built is \"1902-05\", including duplicates. The second statement counts the number of distinct valves where years_built is \"1902-05\".  If there are duplicate valve values for the year \"1902-05\", the counts will be different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what was the date of the last game ?",
+    "schema":"CREATE TABLE df (id number, \"#\" number, \"date\" text, \"venue\" text, \"opponent\" text, \"score\" text, \"result\" text, \"competition\" text)",
+    "sql":"SELECT \"date\" FROM df ORDER BY \"date\" DESC LIMIT 1",
+    "source":"squall",
+    "prediction":"SELECT date FROM df ORDER BY date DESC LIMIT 1",
+    "judgement":"<reason>\n  The table schema has the \"date\" column name enclosed in double quotes, making it case-sensitive. Statement 1 uses the correct case-sensitive name `\"date\"`, while Statement 2 uses the lowercase `date` without quotes. While some SQL implementations might treat these as equivalent, it is safer to assume they are not.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which Result has a Score of 4-1, and a Competition of world cup qualifying?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Result\" text, \"Score\" text, \"Brazil scorers\" text, \"Competition\" text)",
+    "sql":"SELECT \"Result\" FROM df WHERE \"Score\" = '4-1' AND \"Competition\" = 'world cup qualifying'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Result\" FROM df WHERE \"Score\" = '4-1' AND \"Competition\" = 'world cup qualifying'",
+    "judgement":"<reason>\n  The two SQL statements are identical. They both select the \"Result\" column from the table \"df\" where the \"Score\" is '4-1' and the \"Competition\" is 'world cup qualifying'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What nationality is Erin Donohue?",
+    "schema":"CREATE TABLE df (\"Rank\" real, \"Heat\" real, \"Name\" text, \"Nationality\" text, \"Time\" text)",
+    "sql":"SELECT \"Nationality\" FROM df WHERE \"Name\" = 'erin donohue'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Nationality\" FROM df WHERE \"Name\" = 'Erin Donohue'",
+    "judgement":"<reason>\n  SQL is case-insensitive for column names and keywords, but case-sensitive for string literals unless the database is configured to be case-insensitive. Therefore, 'erin donohue' and 'Erin Donohue' are different string literals, and the queries will return different (or potentially no) results if there is no exact match for the case of the name.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What date is aston villa away?",
+    "schema":"CREATE TABLE df (\"Tie no\" text, \"Home team\" text, \"Score\" text, \"Away team\" text, \"Date\" text)",
+    "sql":"SELECT \"Date\" FROM df WHERE \"Away team\" = 'aston villa'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Date\" FROM df WHERE \"Away team\" = 'aston villa'",
+    "judgement":"<reason>\n  Both SQL statements select the \"Date\" column from the table \"df\" where the \"Away team\" is 'aston villa'. They are functionally identical.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"In what venue did the 1982 FIFA World Cup Qualification take place?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Venue\" text, \"Score\" text, \"Result\" text, \"Competition\" text)",
+    "sql":"SELECT \"Venue\" FROM df WHERE \"Competition\" = '1982 fifa world cup qualification'",
+    "source":"wikisql",
+    "prediction":"SELECT DISTINCT \"Venue\" FROM df WHERE \"Competition\" = '1982 FIFA World Cup Qualification';",
+    "judgement":"<reason>\nThe two SQL statements are not equivalent because statement 1 searches for '1982 fifa world cup qualification' while statement 2 searches for '1982 FIFA World Cup Qualification'. The capitalization is different, so they will not return the same values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"only with a ground-truth-final less than or equal to 100",
+    "schema":"CREATE TABLE df (id INTEGER, question VARCHAR, ground-truth VARCHAR, ground-truth-final INTEGER, answer VARCHAR, final-answer VARCHAR, correct BOOLEAN);",
+    "sql":"SELECT * FROM df WHERE \"ground-truth-final\" <= 100",
+    "source":"oxenai",
+    "prediction":"SELECT * FROM df WHERE ground-truth-final <= 100;",
+    "judgement":"<reason>\n  Statement 1 uses double quotes around the column name \"ground-truth-final\", while Statement 2 does not use any quotes. In most SQL dialects, double quotes are used to escape identifiers that are reserved words or contain special characters. However, if the column name doesn't have any special characters or is not a reserved word, it is common to use no quotes or backticks (depending on the SQL dialect). In this case, the column name contains a hyphen, so double quotes are required to correctly reference the column. Without the quotes, the database may interpret `ground-truth-final` as an arithmetic expression. However, given the schema provided, double quotes will work. Thus the statements are functionally equivalent.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What is Date, when Score is '0-2', and when Opponents is 'Bayer Leverkusen'?",
+    "schema":"CREATE TABLE df (date VARCHAR, score VARCHAR, opponents VARCHAR)",
+    "sql":"SELECT date FROM df WHERE score = \"0-2\" AND opponents = \"bayer leverkusen\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT date FROM df WHERE score = '0-2' AND opponents = 'Bayer Leverkusen'",
+    "judgement":"<reason>\n  The strings \"bayer leverkusen\" and \"Bayer Leverkusen\" differ in capitalization. SQL string comparisons are case-sensitive by default. Therefore, the two statements will return different results if there are rows where the `opponents` column is \"Bayer Leverkusen\" but not \"bayer leverkusen\", or vice versa. If the database is configured to be case insensitive, then the queries are equivalent. Without knowing that information, they are not the same.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"How many pages does the edition with a volume # smaller than 8 and an ISBM of 1-40122-892-5 have?",
+    "schema":"CREATE TABLE df (\"Vol. #\" real, \"Title\" text, \"Material collected\" text, \"Pages\" real, \"ISBN\" text)",
+    "sql":"SELECT SUM(\"Pages\") FROM df WHERE \"Vol. #\" < '8' AND \"ISBN\" = '1-40122-892-5'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Pages\" FROM df WHERE \"Vol. #\" < 8 AND \"ISBN\" = '1-40122-892-5'",
+    "judgement":"<reason>\nStatement 1 uses SUM(\"Pages\"), which will return the sum of the \"Pages\" column for all rows that meet the WHERE clause criteria. Statement 2 returns individual \"Pages\" values for rows that satisfy the WHERE clause. They return different results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which clubs have players with height 2.14m?",
+    "schema":"CREATE TABLE df (current_club VARCHAR, height__m_ VARCHAR)",
+    "sql":"SELECT current_club FROM df WHERE height__m_ = \"2.14\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT DISTINCT current_club FROM df WHERE height__m_ = '2.14'",
+    "judgement":"<reason>\nStatement 2 includes the DISTINCT keyword, which removes duplicate values from the result set. Statement 1 will return all occurrences of current_club where height__m_ is 2.14, including duplicates. Therefore, the statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Group by the local authorities and count the number of local authorities, and then group by services, could you rank by the Y in desc?",
+    "schema":"CREATE TABLE df (id int, network_name text, services text, local_authority text)",
+    "sql":"SELECT services, COUNT(services) FROM df GROUP BY local_authority, services ORDER BY COUNT(services) DESC",
+    "source":"nvbench",
+    "prediction":"SELECT local_authority, services, COUNT(local_authority) AS local_authority_count FROM df GROUP BY local_authority, services ORDER BY local_authority_count DESC",
+    "judgement":"<reason>\n  The first statement selects 'services' and the count of 'services', groups by 'local_authority' and 'services', and orders by the count of 'services'. The second statement selects 'local_authority', 'services', and the count of 'local_authority', groups by 'local_authority' and 'services', and orders by the count of 'local_authority'. The first statement does not select local_authority but groups by it, while the second statement selects local_authority and counts it and names it local_authority_count. The second statement also orders by local_authority_count, while the first orders by count(services). Therefore they are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the highest interview for Louisiana with an average above 9.324?",
+    "schema":"CREATE TABLE df (\"State\" text, \"Interview\" real, \"Swimsuit\" real, \"Evening Gown\" real, \"Average\" real)",
+    "sql":"SELECT MAX(\"Interview\") FROM df WHERE \"Average\" > '9.324' AND \"State\" = 'louisiana'",
+    "source":"wikisql",
+    "prediction":"SELECT MAX(\"Interview\") FROM df WHERE \"State\" = 'Louisiana' AND \"Average\" > 9.324",
+    "judgement":"<reason>\n  The two statements are equivalent. The order of conditions in the WHERE clause does not affect the result. Also, the string '9.324' is implicitly converted to the number 9.324 for comparison with the \"Average\" column, so the quotes are irrelevant. The case difference between 'louisiana' and 'Louisiana' would not matter since the table has text values for the \"State\" column.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Tell me the highest total when the horse is spender s",
+    "schema":"CREATE TABLE df (total INTEGER, horse VARCHAR)",
+    "sql":"SELECT MAX(total) FROM df WHERE horse = \"spender s\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT MAX(total) FROM df WHERE horse = 'spender s'",
+    "judgement":"<reason>\n  The two SQL statements are equivalent because both use MAX(total) on the same table (df) with the same WHERE clause. The only difference is the use of double quotes in the first statement and single quotes in the second statement to enclose the string literal \"spender s\". Most SQL databases treat single and double quotes interchangeably for string literals.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What kind of the Winning driver has a Circuit of saint-rapha l?",
+    "schema":"CREATE TABLE df (\"Name\" text, \"Circuit\" text, \"Date\" text, \"Winning driver\" text, \"Winning constructor\" text, \"Report\" text)",
+    "sql":"SELECT \"Winning driver\" FROM df WHERE \"Circuit\" = 'saint-raphaël'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Winning driver\" FROM df WHERE \"Circuit\" = 'saint-rapha l'",
+    "judgement":"<reason>\n  The two SQL statements differ by a single character in the \"Circuit\" value within the WHERE clause. Statement 1 has 'saint-raphaël' and Statement 2 has 'saint-rapha l'. Because of the differing characters, the statements will not return the same results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What year was incumbent jim mcdermott first elected?",
+    "schema":"CREATE TABLE df (\"District\" text, \"Incumbent\" text, \"Party\" text, \"First elected\" real, \"Status\" text, \"Opponent\" text)",
+    "sql":"SELECT MIN(\"First elected\") FROM df WHERE \"Incumbent\" = 'Jim McDermott'",
+    "source":"wikisql",
+    "prediction":"SELECT \"First elected\" FROM df WHERE \"Incumbent\" = 'jim mcdermott'",
+    "judgement":"<reason>\nStatement 1 returns the minimum value of the \"First elected\" column for rows where \"Incumbent\" is 'Jim McDermott'. Statement 2 returns the \"First elected\" value for rows where \"Incumbent\" is 'jim mcdermott'. The case difference in the incumbent's name, along with the min() function, can produce different results if the database is case-sensitive.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which player scored 76-68=144?",
+    "schema":"CREATE TABLE df (player VARCHAR, score VARCHAR)",
+    "sql":"SELECT player FROM df WHERE score = 76 - 68 = 144",
+    "source":"sql_create_context",
+    "prediction":"SELECT player FROM df WHERE score = '76-68=144'",
+    "judgement":"<reason>\n  Statement 1 performs the arithmetic operation `76 - 68 = 144`.  `76 - 68` evaluates to 8. The expression then becomes `8 = 144`, which evaluates to false (0 in some SQL implementations).  The WHERE clause is effectively `WHERE score = 0` or `WHERE score = false`.\n\n  Statement 2 compares the `score` column to the string literal `'76-68=144'`.\n\n  Since the WHERE clauses are different, the results will be different.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Who was the visiting team on April 8 where more than 19,141 were in attendance?",
+    "schema":"CREATE TABLE df (\"Date\" text, \"Visitor\" text, \"Score\" text, \"Home\" text, \"Leading scorer\" text, \"Attendance\" real, \"Record\" text)",
+    "sql":"SELECT \"Visitor\" FROM df WHERE \"Attendance\" > '19,141' AND \"Date\" = 'april 8'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Visitor\" FROM df WHERE \"Date\" = 'April 8' AND \"Attendance\" > 19141",
+    "judgement":"<reason>\nThe first query compares \"Attendance\" with the string '19,141', while the second query compares it with the number 19141. Also, the first query compares \"Date\" with 'april 8' while the second query compares it with 'April 8'. Although SQLite is generally case-insensitive, the comma in the first query's attendance value will prevent an accurate comparison.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is the consistency & participation when pareto efficiency is yes and condorcet is no?",
+    "schema":"CREATE TABLE df (consistency_ VARCHAR, _participation VARCHAR, pareto_efficiency VARCHAR, condorcet VARCHAR)",
+    "sql":"SELECT consistency_ & _participation FROM df WHERE pareto_efficiency = \"yes\" AND condorcet = \"no\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT consistency_, _participation FROM df WHERE pareto_efficiency = 'yes' AND condorcet = 'no'",
+    "judgement":"<reason>\nStatement 1 attempts to perform a bitwise AND operation between the `consistency_` and `_participation` columns. Statement 2 selects the `consistency_` and `_participation` columns directly. Therefore, the two statements are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"which club had a total of only four wins ?",
+    "schema":"CREATE TABLE df (id number, \"position\" number, \"club\" text, \"played\" number, \"points\" number, \"wins\" number, \"draws\" number, \"losses\" number, \"goals for\" number, \"goals against\" number, \"goal difference\" number)",
+    "sql":"SELECT \"club\" FROM df WHERE \"wins\" = 4",
+    "source":"squall",
+    "prediction":"SELECT club FROM df WHERE wins = 4;",
+    "judgement":"<reason>\n  The two SQL statements are equivalent.  In SQL, column names are case-insensitive unless they are enclosed in double quotes.  Statement 1 uses double quotes around the column names \"club\" and \"wins\", while statement 2 does not.  However, because the column names are not case-sensitive without the double quotes, the queries will return the same result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What was the attendance on 1997-12-14?",
+    "schema":"CREATE TABLE df (\"Week\" real, \"Date\" text, \"Opponent\" text, \"Result\" text, \"Game site\" text, \"Attendance\" text)",
+    "sql":"SELECT \"Attendance\" FROM df WHERE \"Date\" = '1997-12-14'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Attendance\" FROM df WHERE \"Date\" = '1997-12-14'",
+    "judgement":"<reason>\n  Both SQL queries select the \"Attendance\" column from the table \"df\" where the \"Date\" column is equal to '1997-12-14'.  Therefore, they will return the same result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Opened prior to 1877 only 2.44km from Wellington, when did this station close?",
+    "schema":"CREATE TABLE df (closed VARCHAR, opened VARCHAR, distance_from_wellington VARCHAR)",
+    "sql":"SELECT closed FROM df WHERE opened < 1877 AND distance_from_wellington = \"2.44km\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT closed FROM df WHERE opened < '1877' AND distance_from_wellington = '2.44'",
+    "judgement":"<reason>\n  The statements are equivalent. The only difference is the use of single quotes around the literal values '1877' and '2.44' in the second statement. However, since the columns `opened` and `distance_from_wellington` are defined as VARCHAR, both statements will perform implicit type conversions for the comparison and equality checks. The quotes are optional but do not change the meaning or result.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"What are the examples for the Australian ?",
+    "schema":"CREATE TABLE df (\"Letter\" text, \"American\" text, \"British\" text, \"Australian\" text, \"Examples\" text)",
+    "sql":"SELECT \"Examples\" FROM df WHERE \"Australian\" = 'æ'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Examples\" FROM df WHERE \"Australian\" IS NOT NULL;",
+    "judgement":"<reason>\n  Statement 1 selects \"Examples\" where \"Australian\" is equal to 'æ'. Statement 2 selects \"Examples\" where \"Australian\" is not null. These are not equivalent as 'æ' is a specific value, and not null means that the \"Australian\" column can be any value other than null, including 'æ' but also including many other values.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is the sum of the total of the player who won in 1979?",
+    "schema":"CREATE TABLE df (\"Player\" text, \"Country\" text, \"Year(s) won\" text, \"Total\" real, \"To par\" real, \"Finish\" text)",
+    "sql":"SELECT SUM(\"Total\") FROM df WHERE \"Year(s) won\" = '1979'",
+    "source":"wikisql",
+    "prediction":"SELECT SUM(\"Total\") FROM df WHERE \"Year(s) won\" LIKE '%1979%'",
+    "judgement":"<reason>\n  Statement 1 will only return the sum of the \"Total\" column where the \"Year(s) won\" column is exactly '1979'. Statement 2, on the other hand, will return the sum of the \"Total\" column where the \"Year(s) won\" column contains '1979' as a substring. Since the \"Year(s) won\" column could contain values such as '1979, 1980', the two queries are not equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"Which Lost has a Position larger than 5, and Points 1 of 37, and less than 63 Goals Against?",
+    "schema":"CREATE TABLE df (lost INTEGER, goals_against VARCHAR, position VARCHAR, points_1 VARCHAR)",
+    "sql":"SELECT AVG(lost) FROM df WHERE position > 5 AND points_1 = \"37\" AND goals_against < 63",
+    "source":"sql_create_context",
+    "prediction":"SELECT lost FROM df WHERE CAST(position AS INTEGER) > 5 AND CAST(points_1 AS INTEGER) = 37 AND CAST(goals_against AS INTEGER) < 63",
+    "judgement":"<reason>\n  Statement 1 calculates the average of the 'lost' column, while statement 2 selects the raw 'lost' values. Additionally, statement 1 compares 'position' and 'goals_against' as strings, while statement 2 casts them to integers before comparison. The points_1 column is also cast as an integer in statement 2. These differences in aggregation and data type conversions lead to different results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is average age of patients whose primary disease is hypoxia and age is greater than or equal to 80?",
+    "schema":"CREATE TABLE df (    subject_id text,    hadm_id text,    name text,    marital_status text,    age text,    dob text,    gender text,    language text,    religion text,    admission_type text,    days_stay text,    insurance text,    ethnicity text,    expire_flag text,    admission_location text,    discharge_location text,    diagnosis text,    dod text,    dob_year text,    dod_year text,    admittime text,    dischtime text,    admityear text )",
+    "sql":"SELECT AVG(df.age) FROM df WHERE df.diagnosis = \"HYPOXIA\" AND df.age >= \"80\"",
+    "source":"mimicsql_data",
+    "prediction":"SELECT AVG(CAST(age AS FLOAT)) FROM df WHERE diagnosis = 'hypoxia' AND CAST(age AS FLOAT) >= 80",
+    "judgement":"<reason>\n  The two statements are not equivalent. Statement 1 directly compares the age column (which is of type TEXT) to the string \"80\". Statement 2 casts the age column to a FLOAT before comparing it to the numeric value 80. Additionally, statement 1 has \"HYPOXIA\" while statement 2 has 'hypoxia'. Depending on the database's collation, the case difference could result in different results.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What is Tennis, when School Year is 2004-05?",
+    "schema":"CREATE TABLE df (\"School Year\" text, \"Volleyball\" text, \"Cross Country\" text, \"Soccer\" text, \"Tennis\" text, \"Golf\" text)",
+    "sql":"SELECT \"Tennis\" FROM df WHERE \"School Year\" = '2004-05'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Tennis\" FROM df WHERE \"School Year\" = '2004-05'",
+    "judgement":"<reason>\n  Both SQL statements perform the exact same operation: selecting the \"Tennis\" column from the table df where the \"School Year\" is '2004-05'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  },
+  {
+    "query":"Which Description has a Year of Issue of 1983, and a Weight of 3.50grams?",
+    "schema":"CREATE TABLE df (description VARCHAR, year_of_issue VARCHAR, weight VARCHAR)",
+    "sql":"SELECT description FROM df WHERE year_of_issue = 1983 AND weight = \"3.50grams\"",
+    "source":"sql_create_context",
+    "prediction":"SELECT description FROM df WHERE year_of_issue = '1983' AND weight = '3.50grams'",
+    "judgement":"<reason>\n  The first query uses an integer (1983) for `year_of_issue`, which is defined as a VARCHAR. The second query uses a string ('1983') which matches the data type. While many SQL implementations might implicitly cast the integer to a string for comparison, it's not guaranteed, and the behavior might depend on the database system's type conversion rules and settings. The weight is also a VARCHAR, and while \"3.50grams\" and '3.50grams' are essentially the same, the lack of quotes around 1983 in the first query means they are not guaranteed to be equivalent.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"What party does the incumbent from the Ohio 20 district belong to?",
+    "schema":"CREATE TABLE df (\"District\" text, \"Incumbent\" text, \"Party\" text, \"First elected\" real, \"Result\" text, \"Candidates\" text)",
+    "sql":"SELECT \"Party\" FROM df WHERE \"District\" = 'Ohio 20'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Party\" FROM df WHERE \"District\" = 'Ohio 20' AND \"Incumbent\" IS NOT NULL;",
+    "judgement":"<reason>\n  The second statement adds the condition that \"Incumbent\" IS NOT NULL. The first statement simply selects the \"Party\" for all rows where \"District\" is 'Ohio 20', regardless of the \"Incumbent\" value. Therefore, the second statement could return a subset of the rows returned by the first statement.\n<\/reason>\n<answer>\n  false\n<\/answer>"
+  },
+  {
+    "query":"what is the wins when the f\/laps is test driver and team is lotus racing?",
+    "schema":"CREATE TABLE df (\"Season\" text, \"Series\" text, \"Team\" text, \"Races\" text, \"Wins\" text, \"Poles\" text, \"F\/Laps\" text, \"Podiums\" text, \"Points\" text, \"Pos.\" text)",
+    "sql":"SELECT \"Wins\" FROM df WHERE \"F\/Laps\" = 'test driver' AND \"Team\" = 'lotus racing'",
+    "source":"wikisql",
+    "prediction":"SELECT \"Wins\" FROM df WHERE \"F\/Laps\" = 'test driver' AND \"Team\" = 'lotus racing'",
+    "judgement":"<reason>\n  Both SQL statements are identical. They both select the \"Wins\" column from the table \"df\" where the \"F\/Laps\" column is equal to 'test driver' and the \"Team\" column is equal to 'lotus racing'.\n<\/reason>\n<answer>\n  true\n<\/answer>"
+  }
+]
