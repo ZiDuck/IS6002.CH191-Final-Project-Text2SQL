@@ -6,13 +6,14 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 import re
+from llm_judge import call_gemini_judge, parse_judgment
 
 # ===========================
 # Streamlit config
 # ===========================
 st.set_page_config(
     page_title="SML Qwen3-0.6B Text2SQL Demo",
-    page_icon="🧠",
+    page_icon="",
     layout="wide",
 )
 
@@ -91,7 +92,7 @@ Database Engine:
 SQLite"""
 
     schema = row.get("schema", row.get("db_schema", ""))
-    question = row.get("query", row.get("question", ""))  # fallback: query -> question
+    question = row.get("full_question", row.get("question", ""))  # fallback: query -> question
 
     user_prompt = f"""Database Schema:
 {schema}
@@ -204,8 +205,42 @@ def generate_bird_sql(row: pd.Series, model_name: str, max_new_tokens: int = 102
 # Main UI
 # ===========================
 def main():
-    st.title("🧠 SML Qwen3-0.6B Text2SQL Demo")
+    # st.title("🧠 SML Qwen3-0.6B Text2SQL Demo")
     st.caption("Supervised finetune • Text-to-SQL • Dev evaluation UI (HF models)")
+
+    # === Custom CSS for Buttons ===
+    st.markdown("""
+    <style>
+    /* Style for all buttons */
+    div.stButton > button {
+        background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+    div.stButton > button:hover {
+        background: linear-gradient(90deg, #182848 0%, #4b6cb7 100%);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+        color: white !important;
+    }
+    div.stButton > button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    div.stButton > button:focus {
+        color: white !important;
+        border-color: transparent !important;
+        box-shadow: 0 0 0 0.2rem rgba(75, 108, 183, 0.5) !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
     st.sidebar.markdown(
         """
@@ -322,7 +357,7 @@ def main():
             selected_row = df_single.iloc[selected_idx]
 
             # ===== Bước 1: Thông tin record =====
-            st.markdown("## Bước 1️⃣: Thông tin record đã chọn")
+            st.markdown("## Bước 1: Thông tin record đã chọn")
             with st.expander("Xem chi tiết record", expanded=True):
                 st.write("**User question:**")
                 st.write(selected_row.get("query", ""))
@@ -339,7 +374,7 @@ def main():
                 st.write("**Source:** ", selected_row.get("source", ""))
 
             # ===== Bước 2: Prompt gửi vào LLM =====
-            st.markdown("## Bước 2️⃣: Prompt gửi vào LLM")
+            st.markdown("## Bước 2️: Prompt gửi vào LLM")
 
             system_prompt_single, user_prompt_single = build_single_table_prompts(selected_row)
 
@@ -362,9 +397,9 @@ def main():
 
 
             # ===== Bước 3: Dự đoán SQL =====
-            st.markdown("## Bước 3️⃣: Kết quả SQL dự đoán")
+            st.markdown("## Bước 3️: Kết quả SQL dự đoán")
 
-            run_single = st.button("🚀 Thực thi Text2SQL (Single-Table)", key="run_single")
+            run_single = st.button("Thực thi Text2SQL (Single-Table)", key="run_single")
 
             if run_single:
                 with st.spinner(f"Đang gọi HF model `{single_model_name}` để sinh SQL..."):
@@ -373,14 +408,50 @@ def main():
                         model_name=single_model_name,
                         max_new_tokens=1024,
                     )
+                
+                # Save to session state
+                st.session_state['single_result'] = {
+                    'predicted_sql': predicted_sql,
+                    'gold_sql': str(selected_row.get("sql", "")),
+                    'query': selected_row.get("query", ""),
+                    'schema': selected_row.get("schema", "")
+                }
 
+            # Display results if available and matches current query
+            current_query_single = selected_row.get("query", "")
+            saved_result_single = st.session_state.get('single_result')
+
+            if saved_result_single and saved_result_single['query'] == current_query_single:
                 st.success("Đã sinh xong SQL.")
                 st.markdown("**SQL dự đoán:**")
-                st.code(pretty_sql(predicted_sql), language="sql")
+                st.code(pretty_sql(saved_result_single['predicted_sql']), language="sql")
 
-                # Thêm Gold SQL
                 st.markdown("**Ground Truth SQL (Gold):**")
-                st.code(pretty_sql(str(selected_row.get("sql", ""))), language="sql")
+                st.code(pretty_sql(saved_result_single['gold_sql']), language="sql")
+
+                # ===== Bước 4: LLM-as-a-judge =====
+                st.markdown("## Bước 4️⃣: LLM-as-a-judge")
+                if st.button("👨‍⚖️ Thực hiện đánh giá (Gemini)", key="judge_single"):
+                    with st.spinner("Đang gọi Gemini để đánh giá..."):
+                        judge_resp = call_gemini_judge(
+                            query=saved_result_single['query'],
+                            schema=saved_result_single['schema'],
+                            gold_sql=saved_result_single['gold_sql'],
+                            predicted_sql=saved_result_single['predicted_sql']
+                        )
+                        parsed = parse_judgment(judge_resp)
+                    
+                    st.markdown("### Kết quả đánh giá:")
+                    if parsed['answer']:
+                        st.success(f"**Kết quả:** TRUE - Hai câu SQL tương đương.")
+                    else:
+                        st.error(f"**Kết quả:** FALSE - Hai câu SQL KHÔNG tương đương.")
+                    
+                    st.markdown("**Lý do:**")
+                    st.write(parsed['reason'])
+                    
+                    with st.expander("Xem raw response"):
+                        st.text(parsed.get('raw_response', judge_resp))
 
         else:
             st.info("Chưa có dữ liệu Single-Table hoặc load lỗi.")
@@ -484,14 +555,50 @@ def main():
                         model_name=bird_model_name,
                         max_new_tokens=1024,
                     )
+                
+                # Save to session state
+                st.session_state['bird_result'] = {
+                    'predicted_sql': predicted_sql_bird,
+                    'gold_sql': str(selected_row_bird.get("SQL", "")),
+                    'query': selected_row_bird.get("question", ""),
+                    'schema': selected_row_bird.get("schema", selected_row_bird.get("db_schema", ""))
+                }
 
+            # Display results if available and matches current query
+            current_query_bird = selected_row_bird.get("question", "")
+            saved_result_bird = st.session_state.get('bird_result')
+
+            if saved_result_bird and saved_result_bird['query'] == current_query_bird:
                 st.success("Đã sinh xong SQL.")
                 st.markdown("**SQL dự đoán:**")
-                st.code(pretty_sql(predicted_sql_bird), language="sql")
+                st.code(pretty_sql(saved_result_bird['predicted_sql']), language="sql")
 
-                # Thêm Gold SQL (cột BIRD thường là "SQL")
                 st.markdown("**Ground Truth SQL (Gold):**")
-                st.code(pretty_sql(str(selected_row_bird.get("SQL", ""))), language="sql")
+                st.code(pretty_sql(saved_result_bird['gold_sql']), language="sql")
+
+                # ===== Bước 4: LLM-as-a-judge =====
+                st.markdown("## Bước 4️⃣: LLM-as-a-judge")
+                if st.button("👨‍⚖️ Thực hiện đánh giá (Gemini)", key="judge_bird"):
+                    with st.spinner("Đang gọi Gemini để đánh giá..."):
+                        judge_resp = call_gemini_judge(
+                            query=saved_result_bird['query'],
+                            schema=saved_result_bird['schema'],
+                            gold_sql=saved_result_bird['gold_sql'],
+                            predicted_sql=saved_result_bird['predicted_sql']
+                        )
+                        parsed = parse_judgment(judge_resp)
+                    
+                    st.markdown("### Kết quả đánh giá:")
+                    if parsed['answer']:
+                        st.success(f"**Kết quả:** TRUE - Hai câu SQL tương đương.")
+                    else:
+                        st.error(f"**Kết quả:** FALSE - Hai câu SQL KHÔNG tương đương.")
+                    
+                    st.markdown("**Lý do:**")
+                    st.write(parsed['reason'])
+                    
+                    with st.expander("Xem raw response"):
+                        st.text(parsed.get('raw_response', judge_resp))
 
         else:
             st.info("Chưa có dữ liệu BIRD hoặc load lỗi.")
