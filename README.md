@@ -20,8 +20,8 @@ Contains training and evaluation datasets used throughout the fine-tuning and ev
 
 Contains Jupyter notebooks for the complete experimental pipeline:
 
--   **`text2sql_finetune.ipynb`**: Fine-tunes the Qwen3-0.6B model on Text-to-SQL datasets and uploads the trained model to Hugging Face
--   **`text2sql_eval.ipynb`**: Generates predictions on test datasets using the fine-tuned model
+-   **`text2sql_finetune_bird.ipynb`**/**`text2sql_finetune_single_table.ipynb`**: Fine-tunes the Qwen3-0.6B model on Text-to-SQL datasets and uploads the trained model to Hugging Face
+-   **`text2sql_eval_bird.ipynb`**/**`text2sql_eval_single_table.ipynb`**: Generates predictions on test datasets using the fine-tuned model
 -   **`text2sql_extract_accuracy.ipynb`**: Calculates accuracy metrics from LLM-as-a-judge evaluation results
 
 ### 📁 `results/`
